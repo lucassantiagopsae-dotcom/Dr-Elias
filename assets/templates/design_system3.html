@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tooth Fairy - Premium Design System v3.0 (Lime Edition)</title>
+    
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"Geist Mono"', 'monospace'],
+                    },
+                    colors: {
+                        primary: {
+                            DEFAULT: '#97E45D',
+                            50: '#f7fdf0',
+                            100: '#effce2',
+                            200: '#def9c5',
+                            300: '#c5f39c',
+                            400: '#97e45d', // Crescent Lime
+                            500: '#86cf50',
+                            600: '#68ad3c',
+                            700: '#4f8430',
+                            800: '#416a2a',
+                            900: '#385926',
+                        },
+                        dark: {
+                            DEFAULT: '#1a1a1a',
+                            950: '#0a0a0a',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'shimmer': 'shimmer 2.5s linear infinite',
+                        'beam-h': 'beam-h 5s linear infinite',
+                        'beam-v': 'beam-v 5s linear infinite',
+                        'reveal-up': 'reveal-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-20px) rotate(2deg)' },
+                        },
+                        shimmer: {
+                            'from': { transform: 'translateX(-100%) skewX(-15deg)' },
+                            'to': { transform: 'translateX(200%) skewX(-15deg)' },
+                        },
+                        'beam-h': {
+                            '0%': { left: '-200px', opacity: '0' },
+                            '10%': { opacity: '0.8' },
+                            '90%': { opacity: '0.8' },
+                            '100%': { left: '100%', opacity: '0' },
+                        },
+                        'beam-v': {
+                            '0%': { top: '-200px', opacity: '0' },
+                            '10%': { opacity: '0.8' },
+                            '90%': { opacity: '0.8' },
+                            '100%': { top: '100%', opacity: '0' },
+                        },
+                        'reveal-up': {
+                            '0%': { clipPath: 'inset(100% 0 0 0)', transform: 'translateY(40px)', opacity: '0' },
+                            '100%': { clipPath: 'inset(0 0 0 0)', transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --beam-color: #97E45D;
+            --grid-color: rgba(151, 228, 93, 0.08);
+            --mouse-x: 50%;
+            --mouse-y: 50%;
+        }
+
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdfdfd; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f8fafc; }
+        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #97E45D; }
+
+        /* Grid Background (Medical Style) */
+        .bg-grid-medical {
+            background-size: 50px 50px;
+            background-image: linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+            linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+        }
+
+        /* Cinematic Beams */
+        .beam-h { position: absolute; height: 1px; width: 250px; background: linear-gradient(90deg, transparent, var(--beam-color), transparent); z-index: 5; opacity: 0; }
+        .beam-v { position: absolute; width: 1px; height: 250px; background: linear-gradient(180deg, transparent, var(--beam-color), transparent); z-index: 5; opacity: 0; }
+
+        /* Flashlight Effect */
+        .flashlight-card { position: relative; overflow: hidden; background: white; border: 1px solid #f1f5f9; }
+        .flashlight-card::before {
+            content: "";
+            position: absolute;
+            inset: 0px;
+            background: radial-gradient(
+                600px circle at var(--mouse-x) var(--mouse-y),
+                rgba(151, 228, 93, 0.12),
+                transparent 40%
+            );
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .flashlight-card:hover::before { opacity: 1; }
+
+        /* Component Classes */
+        .ds-section { border-bottom: 1px solid #f1f5f9; padding: 120px 0; position: relative; }
+        .ds-label { font-family: 'Geist Mono', monospace; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3em; color: #94a3b8; margin-bottom: 2rem; display: block; }
+        
+        .glass-medical { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(151, 228, 93, 0.2); }
+        .reveal-item { opacity: 0; }
+
+        /* Shimmer Button */
+        .btn-shimmer {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-shimmer::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 3s infinite;
+        }
+    </style>
+</head>
+<body class="text-dark antialiased selection:bg-primary selection:text-dark-950 overflow-x-hidden">
+
+    <!-- Design System Nav -->
+    <nav class="fixed top-0 left-0 right-0 z-[100] glass-medical h-20 flex items-center justify-between px-10">
+        <div class="flex items-center gap-3 group cursor-pointer">
+            <div class="w-10 h-10 bg-dark text-primary rounded-xl flex items-center justify-center transition-transform group-hover:rotate-12">
+                <iconify-icon icon="solar:tooth-bold-duotone" width="24"></iconify-icon>
+            </div>
+            <div class="flex flex-col">
+                <span class="font-black text-dark tracking-tighter text-xl">Tooth Fairy</span>
+                <span class="text-[9px] font-bold text-primary uppercase tracking-[0.4em] -mt-1">Edition v3.0</span>
+            </div>
+        </div>
+        <div class="hidden lg:flex gap-10 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">
+            <a href="#hero" class="hover:text-primary transition-colors">Capability</a>
+            <a href="#typography" class="hover:text-primary transition-colors">Typo</a>
+            <a href="#colors" class="hover:text-primary transition-colors">Colors</a>
+            <a href="#components" class="hover:text-primary transition-colors">UI Kit</a>
+            <a href="#motion" class="hover:text-primary transition-colors">Motion</a>
+        </div>
+        <div class="flex items-center gap-4">
+            <button class="bg-primary text-dark font-black text-[10px] uppercase px-8 py-3 rounded-xl hover:bg-dark hover:text-primary transition-all shadow-xl shadow-primary/20">
+                Prototypes
+            </button>
+        </div>
+    </nav>
+
+    <!-- 0) CAPABILITY DEMO HERO -->
+    <section id="hero" class="min-h-screen relative flex items-center justify-center overflow-hidden bg-white pt-20">
+        <!-- Background Physics -->
+        <div class="absolute inset-0 bg-grid-medical opacity-50 z-0"></div>
+        <div class="absolute inset-0 z-0 pointer-events-none">
+            <div class="beam-h animate-beam-h" style="top: 25%; animation-duration: 8s;"></div>
+            <div class="beam-h animate-beam-h" style="top: 75%; animation-delay: 2s; animation-duration: 6s; opacity: 0.5;"></div>
+            <div class="beam-v animate-beam-v" style="left: 20%; animation-duration: 10s;"></div>
+            <div class="beam-v animate-beam-v" style="left: 80%; animation-delay: 3s; animation-duration: 7s;"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-10 w-full grid lg:grid-cols-2 gap-20 relative z-10">
+            <div class="flex flex-col justify-center space-y-10">
+                <div class="inline-flex items-center gap-3 bg-dark text-white px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.4em] animate-reveal-up">
+                    <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                    Lime Protocol Established
+                </div>
+                
+                <h1 class="text-7xl md:text-9xl font-black text-dark tracking-tighter leading-[0.85] mb-4">
+                    <span class="block animate-reveal-up" style="animation-delay: 0.1s">Precision</span>
+                    <span class="block text-primary animate-reveal-up" style="animation-delay: 0.2s; text-shadow: 0 0 50px rgba(151, 228, 93, 0.2)">Dentistry.</span>
+                    <span class="block text-slate-300 animate-reveal-up" style="animation-delay: 0.3s">Modernized.</span>
+                </h1>
+
+                <p class="text-xl text-slate-500 font-medium max-w-lg leading-relaxed animate-reveal-up" style="animation-delay: 0.4s">
+                    Nossa terceira iteração combina a frescura do <span class="text-primary font-bold">Lime Green</span> com o rigor das animações cinemáticas. Projetado para quem busca a perfeição visual.
+                </p>
+
+                <div class="flex flex-wrap gap-6 animate-reveal-up" style="animation-delay: 0.5s">
+                    <button class="btn-shimmer px-12 py-5 bg-primary text-dark font-black rounded-2xl transform hover:scale-105 active:scale-95 shadow-2xl shadow-primary/30 group">
+                        <span class="flex items-center gap-3 text-sm">
+                            <iconify-icon icon="solar:stars-minimalistic-bold-duotone" width="22"></iconify-icon>
+                            Start Extraction
+                        </span>
+                    </button>
+                    
+                    <button class="px-12 py-5 bg-white text-dark border-2 border-slate-100 font-black rounded-2xl hover:border-primary transition-all flex items-center gap-3 text-sm">
+                        View Spec v3.0
+                        <iconify-icon icon="solar:alt-arrow-right-linear" width="20"></iconify-icon>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hero Image Frame -->
+            <div class="relative group animate-reveal-up" style="animation-delay: 0.6s">
+                <div class="absolute -inset-10 bg-primary/10 blur-[100px] rounded-full animate-pulse"></div>
+                <div class="relative aspect-[4/5] rounded-[3rem] overflow-hidden border-[16px] border-white shadow-[0_50px_100px_rgba(0,0,0,0.1)] perspective-1000">
+                    <img src="hero_lime.png" alt="Dental Practice" class="object-cover w-full h-full scale-110 group-hover:scale-100 transition-transform duration-[2s]">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent"></div>
+                    
+                    <!-- Floating Badge -->
+                    <div class="absolute bottom-10 left-10 right-10 glass-medical p-8 rounded-3xl animate-float">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-[10px] font-bold text-primary uppercase tracking-widest">Innovation Award</span>
+                            <iconify-icon icon="solar:medal-star-bold-duotone" class="text-primary" width="24"></iconify-icon>
+                        </div>
+                        <h4 class="text-dark font-black text-2xl mb-1 tracking-tight">Crescent Practice</h4>
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-widest leading-none">Excellence in Dental Care</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1) TYPOGRAPHY SECTION -->
+    <section id="typography" class="ds-section bg-[#f8fafc]">
+        <div class="max-w-7xl mx-auto px-10">
+            <span class="ds-label">01 / Typography System</span>
+            
+            <div class="grid lg:grid-cols-2 gap-20">
+                <div class="space-y-16">
+                    <div class="reveal-item">
+                        <h1 class="text-9xl font-black text-dark tracking-tighter mb-4">Display.</h1>
+                        <span class="text-[10px] font-mono text-slate-400">Heading 1 / Plus Jakarta Sans / 128px</span>
+                    </div>
+                    <div class="reveal-item">
+                        <h2 class="text-6xl font-extrabold text-dark tracking-tight mb-4">Heading Level 2.</h2>
+                        <span class="text-[10px] font-mono text-slate-400">Heading 2 / 60px / 1.1</span>
+                    </div>
+                    <div class="reveal-item">
+                        <h3 class="text-4xl font-bold text-dark tracking-tight mb-4">Heading Level 3 Type.</h3>
+                        <span class="text-[10px] font-mono text-slate-400">Heading 3 / 36px / 1.2</span>
+                    </div>
+                </div>
+
+                <div class="space-y-16 pt-10">
+                    <div class="reveal-item">
+                        <span class="text-[10px] font-bold text-primary bg-dark px-2 py-0.5 rounded uppercase mb-6 inline-block">Body Large</span>
+                        <p class="text-2xl text-slate-500 font-medium leading-relaxed">
+                            A clear, legible and high-contrast typography system designed for medical precision and user comfort across all digital interfaces.
+                        </p>
+                    </div>
+                    <div class="reveal-item">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase mb-6 inline-block">Body Regular</span>
+                        <p class="text-base text-slate-600 leading-relaxed font-medium">
+                            Our standard body text ensures readability during long interactions. We use an 18px base for professional clarity, ensuring that every detail of the patient's journey is accessible and well-documented.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2) COLOR SYSTEM -->
+    <section id="colors" class="ds-section bg-white">
+        <div class="max-w-7xl mx-auto px-10">
+            <span class="ds-label">02 / Color Protocol</span>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <!-- Branding -->
+                <div class="space-y-8 reveal-item">
+                    <h4 class="text-xs font-black text-dark uppercase tracking-widest">Brand Primary</h4>
+                    <div class="h-64 w-full rounded-3xl bg-primary shadow-2xl shadow-primary/20 flex flex-col justify-end p-8 border border-primary/50 relative overflow-hidden group">
+                        <div class="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                        <span class="relative z-10 text-dark font-black text-2xl mb-1">Lime #97E45D</span>
+                        <span class="relative z-10 text-dark/60 font-mono text-[10px] uppercase">Primary CTA / Role</span>
+                    </div>
+                    <div class="grid grid-cols-5 gap-2">
+                        <div class="h-10 rounded-lg bg-primary-50"></div>
+                        <div class="h-10 rounded-lg bg-primary-100"></div>
+                        <div class="h-10 rounded-lg bg-primary-300"></div>
+                        <div class="h-10 rounded-lg bg-primary-600"></div>
+                        <div class="h-10 rounded-lg bg-primary-900"></div>
+                    </div>
+                </div>
+
+                <!-- Neutrals -->
+                <div class="space-y-8 reveal-item">
+                    <h4 class="text-xs font-black text-dark uppercase tracking-widest">Dark Neutrals</h4>
+                    <div class="h-64 w-full rounded-3xl bg-dark shadow-2xl shadow-dark/20 flex flex-col justify-end p-8 border border-white/5 relative group">
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
+                        <span class="relative z-10 text-primary font-black text-2xl mb-1">Black #1A1A1A</span>
+                        <span class="relative z-10 text-white/40 font-mono text-[10px] uppercase">Main Surface / UI</span>
+                    </div>
+                    <div class="grid grid-cols-5 gap-2">
+                        <div class="h-10 rounded-lg bg-slate-50 border border-slate-100"></div>
+                        <div class="h-10 rounded-lg bg-slate-200"></div>
+                        <div class="h-10 rounded-lg bg-slate-400"></div>
+                        <div class="h-10 rounded-lg bg-slate-600"></div>
+                        <div class="h-10 rounded-lg bg-slate-800"></div>
+                    </div>
+                </div>
+
+                <!-- Decor -->
+                <div class="space-y-8 reveal-item col-span-1 lg:col-span-2">
+                    <h4 class="text-xs font-black text-dark uppercase tracking-widest">Surface Utility</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                        <div class="p-8 bg-slate-50 border border-slate-100 rounded-3xl space-y-4">
+                            <iconify-icon icon="solar:brush-bold-duotone" width="32" class="text-primary"></iconify-icon>
+                            <h5 class="font-black text-dark text-lg">Subtle Tint</h5>
+                            <p class="text-xs text-slate-500 font-medium">Used for background blobs and hover highlights (Lime 10%).</p>
+                        </div>
+                        <div class="p-8 bg-white border border-slate-100 shadow-xl shadow-slate-200/50 rounded-3xl space-y-4">
+                            <iconify-icon icon="solar:glass-bold-duotone" width="32" class="text-primary"></iconify-icon>
+                            <h5 class="font-black text-dark text-lg">Frosted Glass</h5>
+                            <p class="text-xs text-slate-500 font-medium">Used for sticky navigations and modal backgrounds.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3) UI COMPONENTS -->
+    <section id="components" class="ds-section bg-[#fcfdfd]">
+         <!-- Background Beams -->
+         <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-20">
+             <div class="beam-h animate-beam-h" style="top: 15%; right: -200px; animation-duration: 9s;"></div>
+             <div class="beam-h animate-beam-h" style="top: 85%; left: -200px; animation-delay: 4s; animation-duration: 11s;"></div>
+         </div>
+
+        <div class="max-w-7xl mx-auto px-10 relative z-10">
+            <span class="ds-label">03 / Interactive Component Lab</span>
+            
+            <div class="space-y-32">
+                <!-- Actions -->
+                <div class="reveal-item">
+                    <h4 class="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] mb-12">Action elements</h4>
+                    <div class="flex flex-wrap gap-10 items-center">
+                        <button class="btn-shimmer px-10 py-4 bg-primary text-dark font-black rounded-2xl flex items-center gap-3 shadow-xl shadow-primary/20 hover:-translate-y-1 transition-all">
+                            Request Visit
+                            <iconify-icon icon="solar:magic-stick-bold-duotone" width="18"></iconify-icon>
+                        </button>
+                        <button class="px-10 py-4 bg-dark text-white font-black rounded-2xl flex items-center gap-3 hover:bg-primary hover:text-dark transition-all shadow-xl shadow-dark/10 group">
+                            Next Stage
+                            <iconify-icon icon="solar:alt-arrow-right-linear" width="18" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+                        </button>
+                        <button class="px-10 py-4 bg-white border-2 border-slate-100 text-dark font-black rounded-2xl hover:border-primary transition-all">
+                            Archive Info
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cards -->
+                <div class="reveal-item">
+                    <h4 class="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] mb-12">Dynamic Surfaces (Flashlight + Kinetic)</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                        <!-- Flashlight Card -->
+                        <div class="flashlight-card p-12 rounded-[3.5rem] group cursor-pointer border border-slate-100 hover:shadow-2xl hover:-translate-y-3 transition-all duration-500">
+                            <div class="w-16 h-16 bg-primary text-dark rounded-2xl flex items-center justify-center mb-10 group-hover:rotate-[360deg] transition-all duration-1000 ease-in-out">
+                                <iconify-icon icon="solar:cosmetic-bold-duotone" width="32"></iconify-icon>
+                            </div>
+                            <h3 class="text-2xl font-black text-dark mb-4 tracking-tight">Bonding.</h3>
+                            <p class="text-slate-500 font-medium leading-relaxed">Restauração estética de alta precisão para sorrisos impecáveis.</p>
+                            <div class="mt-10 h-1 w-0 bg-primary group-hover:w-full transition-all duration-700"></div>
+                        </div>
+
+                        <!-- Dark Info Card -->
+                        <div class="bg-dark p-12 rounded-[3.5rem] relative overflow-hidden group">
+                            <div class="absolute -right-10 -top-10 w-40 h-40 bg-primary opacity-5 blur-[80px] group-hover:scale-150 transition-transform duration-[1s]"></div>
+                            <h3 class="text-7xl font-black text-white/5 absolute top-10 right-10 group-hover:text-primary/10 transition-colors">01</h3>
+                            <iconify-icon icon="solar:medical-kit-bold-duotone" class="text-primary mb-10" width="48"></iconify-icon>
+                            <h3 class="text-2xl font-black text-white mb-4 tracking-tight">Full Scanner.</h3>
+                            <p class="text-slate-400 font-medium leading-relaxed">Diagnóstico digital em 3D para máxima precisão cirúrgica.</p>
+                            <button class="mt-10 text-[10px] font-bold text-primary uppercase tracking-widest flex items-center gap-2 group-hover:gap-4 transition-all">
+                                Explore Tech <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon>
+                            </button>
+                        </div>
+
+                        <!-- Price Card -->
+                        <div class="bg-white p-12 rounded-[3.5rem] border-2 border-slate-50 hover:border-primary transition-all duration-500 relative group">
+                            <div class="absolute top-8 right-8 bg-primary/10 text-primary text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-tighter">Professional</div>
+                            <h4 class="text-slate-400 font-bold text-xs uppercase tracking-widest mb-2">Membership</h4>
+                            <div class="flex items-baseline gap-1 mb-10">
+                                <span class="text-4xl font-black text-dark">£25.00</span>
+                                <span class="text-slate-300 font-bold text-xs">/mo</span>
+                            </div>
+                            <ul class="space-y-4 mb-10">
+                                <li class="flex items-center gap-3 text-xs font-bold text-slate-500">
+                                    <iconify-icon icon="solar:check-circle-bold" class="text-primary"></iconify-icon> 2 Check-ups / Year
+                                </li>
+                                <li class="flex items-center gap-3 text-xs font-bold text-slate-500">
+                                    <iconify-icon icon="solar:check-circle-bold" class="text-primary"></iconify-icon> Emergency Cover
+                                </li>
+                            </ul>
+                            <button class="w-full py-4 bg-dark text-white rounded-2xl font-black hover:bg-primary hover:text-dark transition-all">Select Plan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Forms -->
+                <div class="reveal-item">
+                    <h4 class="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] mb-12">Precision Inputs</h4>
+                    <div class="max-w-2xl space-y-8 bg-white p-16 rounded-[4rem] border border-slate-100 shadow-2xl shadow-slate-200/50">
+                        <div class="grid md:grid-cols-2 gap-10">
+                            <div class="space-y-3">
+                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Full Identity</label>
+                                <input type="text" placeholder="Your Name" class="w-full h-16 px-8 bg-slate-50 border-2 border-slate-50 rounded-2xl outline-none focus:border-primary focus:bg-white transition-all font-bold text-dark text-sm">
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Department</label>
+                                <div class="relative">
+                                    <select class="w-full h-16 px-8 bg-slate-50 border-2 border-slate-50 rounded-2xl outline-none focus:border-primary focus:bg-white transition-all font-bold text-dark text-sm appearance-none">
+                                        <option>Aesthetic Bonding</option>
+                                        <option>General Practice</option>
+                                    </select>
+                                    <iconify-icon icon="solar:alt-arrow-down-linear" class="absolute right-6 top-1/2 -translate-y-1/2 text-slate-300" width="20"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="w-full py-5 bg-dark text-white font-black rounded-2xl hover:bg-primary hover:text-dark transition-all shadow-xl shadow-dark/10">Submit Request Protocol</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4) MOTION & PHYSICS -->
+    <section id="motion" class="ds-section bg-dark text-white overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-10 relative z-10">
+            <span class="ds-label !text-slate-700">04 / Kinetic Physics & Solar Set</span>
+            
+            <div class="grid lg:grid-cols-2 gap-32">
+                <div class="space-y-16">
+                    <h1 class="text-7xl font-black tracking-tighter">Motion <span class="text-primary">DNA.</span></h1>
+                    <div class="grid grid-cols-4 md:grid-cols-5 gap-8">
+                        <div class="w-20 h-20 bg-white/5 border border-white/10 rounded-3xl flex items-center justify-center hover:bg-primary hover:text-dark transition-all cursor-pointer group">
+                             <iconify-icon icon="solar:volleyball-bold-duotone" width="36" class="group-hover:rotate-180 transition-transform duration-700"></iconify-icon>
+                        </div>
+                        <div class="w-20 h-20 bg-white/5 border border-white/10 rounded-3xl flex items-center justify-center hover:bg-primary hover:text-dark transition-all cursor-pointer group">
+                             <iconify-icon icon="solar:dna-bold-duotone" width="36" class="group-hover:scale-125 transition-transform"></iconify-icon>
+                        </div>
+                        <div class="w-20 h-20 bg-white/5 border border-white/10 rounded-3xl flex items-center justify-center hover:bg-primary hover:text-dark transition-all cursor-pointer group">
+                             <iconify-icon icon="solar:global-bold-duotone" width="36"></iconify-icon>
+                        </div>
+                        <div class="w-20 h-20 bg-white/5 border border-white/10 rounded-3xl flex items-center justify-center hover:bg-primary hover:text-dark transition-all cursor-pointer group">
+                             <iconify-icon icon="solar:mask-happly-bold-duotone" width="36"></iconify-icon>
+                        </div>
+                        <div class="w-20 h-20 bg-primary text-dark rounded-3xl flex items-center justify-center shadow-[0_0_50px_rgba(151,228,93,0.3)]">
+                             <iconify-icon icon="solar:bolt-bold-duotone" width="36"></iconify-icon>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <h4 class="text-[10px] font-bold text-slate-700 uppercase tracking-widest">Transition Curve Spec</h4>
+                        <div class="flex items-center justify-between p-6 bg-white/5 border border-white/5 rounded-3xl">
+                            <span class="text-sm font-mono text-slate-500">Medical Reveal</span>
+                            <span class="text-primary font-black uppercase tracking-widest text-[10px] px-4 py-1.5 bg-primary/10 rounded-full">Cubic Bezier (0.16, 1, 0.3, 1)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-center">
+                    <div class="relative">
+                        <!-- Physics Spin Simulation -->
+                        <div class="w-96 h-96 border-2 border-white/5 rounded-full flex items-center justify-center relative animate-spin" style="animation-duration: 30s;">
+                            <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 bg-primary rounded-full shadow-[0_0_40px_rgba(151,228,93,0.6)]"></div>
+                        </div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-64 h-64 border border-white/10 rounded-full flex items-center justify-center">
+                                <div class="w-32 h-32 bg-white text-dark rounded-full flex items-center justify-center shadow-2xl animate-float">
+                                    <iconify-icon icon="solar:atom-bold-duotone" width="60" class="animate-spin" style="animation-duration: 15s;"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-24 text-center border-t border-slate-100">
+        <div class="flex flex-col items-center gap-10">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-dark text-primary rounded-xl flex items-center justify-center">
+                    <iconify-icon icon="solar:tooth-bold-duotone" width="24"></iconify-icon>
+                </div>
+                <span class="font-black text-dark tracking-tighter text-2xl">Tooth Fairy Lab</span>
+            </div>
+            <p class="text-[10px] font-bold text-slate-300 uppercase tracking-[0.6em]">© 2026 Constructed with absolute precision for Dr. Elias Sousa</p>
+            <div class="flex gap-12">
+                <a href="#" class="text-[10px] font-bold text-slate-400 hover:text-primary transition-colors uppercase tracking-[0.2em]">Protocol V3.0</a>
+                <a href="#" class="text-[10px] font-bold text-slate-400 hover:text-primary transition-colors uppercase tracking-[0.2em]">Asset Hub</a>
+                <a href="#" class="text-[10px] font-bold text-slate-400 hover:text-primary transition-colors uppercase tracking-[0.2em]">Kinetic Library</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mouse orientation for Flashlight Cards
+        window.addEventListener('mousemove', e => {
+            const x = (e.clientX / window.innerWidth) * 100;
+            const y = (e.clientY / window.innerHeight) * 100;
+            document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+            document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+        });
+
+        document.querySelectorAll('.flashlight-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // GSAP Scroll Reveal
+        gsap.registerPlugin(ScrollTrigger);
+
+        document.querySelectorAll('.reveal-item').forEach((item, index) => {
+            gsap.fromTo(item, 
+                { opacity: 0, y: 50 },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 1.5, 
+                    ease: "power4.out",
+                    scrollTrigger: {
+                        trigger: item,
+                        start: "top 85%",
+                        toggleActions: "play none none none"
+                    },
+                    delay: (index % 3) * 0.1
+                }
+            );
+        });
+    </script>
+</body>
+</html>

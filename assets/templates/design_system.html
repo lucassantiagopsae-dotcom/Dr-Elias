@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tooth Fairy - Premium Design System v2.0</title>
+    
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"Geist Mono"', 'monospace'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb', // Tooth Fairy Blue
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'shimmer': 'shimmer 2s linear infinite',
+                        'beam-h': 'beam-h 5s linear infinite',
+                        'beam-v': 'beam-v 5s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        shimmer: {
+                            'from': { transform: 'translateX(-100%)' },
+                            'to': { transform: 'translateX(100%)' },
+                        },
+                        'beam-h': {
+                            '0%': { left: '-200px', opacity: '0' },
+                            '10%': { opacity: '1' },
+                            '90%': { opacity: '1' },
+                            '100%': { left: '100%', opacity: '0' },
+                        },
+                        'beam-v': {
+                            '0%': { top: '-200px', opacity: '0' },
+                            '10%': { opacity: '1' },
+                            '90%': { opacity: '1' },
+                            '100%': { top: '100%', opacity: '0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --beam-color: #3b82f6;
+            --grid-color: rgba(30, 41, 59, 0.05);
+        }
+
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Background Grid */
+        .bg-grid-slate {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+            linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+        }
+
+        /* Cinematic Beams (White Medical style) */
+        .beam-h { position: absolute; height: 1px; width: 200px; background: linear-gradient(90deg, transparent, var(--beam-color), transparent); z-index: 5; opacity: 0; }
+        .beam-v { position: absolute; width: 1px; height: 200px; background: linear-gradient(180deg, transparent, var(--beam-color), transparent); z-index: 5; opacity: 0; }
+
+        /* Flashlight Reveal (Gemini style) */
+        .flashlight-card { position: relative; overflow: hidden; }
+        .flashlight-card::before {
+            content: "";
+            position: absolute;
+            inset: 0px;
+            background: radial-gradient(
+                600px circle at var(--mouse-x) var(--mouse-y),
+                rgba(37, 99, 235, 0.06),
+                transparent 40%
+            );
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .flashlight-card:hover::before { opacity: 1; }
+
+        /* Section Lab Styling */
+        .lab-section { border-bottom: 1px solid #e2e8f0; padding: 80px 0; position: relative; }
+        .lab-label { font-family: 'Geist Mono', monospace; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin-bottom: 24px; display: block; }
+        
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+    </style>
+</head>
+<body class="bg-[#f8fafc] text-slate-900 antialiased selection:bg-primary-100 selection:text-primary-700">
+
+    <!-- Design System Nav -->
+    <nav class="sticky top-0 z-[100] bg-white/80 backdrop-blur-md border-b border-slate-200 py-4 px-8 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-primary-600 text-white rounded-lg flex items-center justify-center">
+                <iconify-icon icon="solar:medical-kit-bold-duotone" width="20"></iconify-icon>
+            </div>
+            <span class="font-bold tracking-tight">Tooth Fairy <span class="text-slate-400 font-medium text-xs uppercase ml-1">Pattern Lab</span></span>
+        </div>
+        <div class="hidden md:flex gap-8 text-[11px] font-bold uppercase tracking-widest text-slate-500">
+            <a href="#hero" class="hover:text-primary-600 transition-colors">Hero Demo</a>
+            <a href="#typography" class="hover:text-primary-600 transition-colors">Typography</a>
+            <a href="#colors" class="hover:text-primary-600 transition-colors">Colors</a>
+            <a href="#components" class="hover:text-primary-600 transition-colors">Components</a>
+            <a href="#motion" class="hover:text-primary-600 transition-colors">Motion</a>
+        </div>
+    </nav>
+
+    <!-- 0) CAPABILITY DEMO HERO -->
+    <section id="hero" class="min-h-[80vh] relative flex items-center justify-center overflow-hidden bg-white">
+        <!-- Grid & Beams -->
+        <div class="absolute inset-0 bg-grid-slate pointer-events-none opacity-50"></div>
+        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <div class="beam-h animate-beam-h" style="top: 30%; left: -200px; animation-duration: 4s;"></div>
+            <div class="beam-h animate-beam-h" style="top: 70%; left: -200px; animation-delay: 1.5s; animation-duration: 6s;"></div>
+            <div class="beam-v animate-beam-v" style="left: 20%; top: -200px; animation-delay: 0.5s; animation-duration: 5s;"></div>
+            <div class="beam-v animate-beam-v" style="left: 80%; top: -200px; animation-delay: 2s; animation-duration: 4s;"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 w-full grid md:grid-cols-2 gap-12 relative z-10">
+            <div class="flex flex-col justify-center">
+                <div class="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6 w-fit">
+                    <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+                    Premium Design Protocol
+                </div>
+                <h1 class="text-6xl md:text-7xl font-extrabold text-slate-900 tracking-tighter leading-[1.05] mb-6">
+                    Building the <span class="text-primary-600">Future</span> of Dental Care.
+                </h1>
+                <p class="text-lg text-slate-500 mb-8 max-w-lg leading-relaxed">
+                    A synthesis of modern medical aesthetics and advanced interactive patterns. Created to deliver consistency across all patient touchpoints.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <!-- Shimmer Button -->
+                    <button class="relative px-8 py-4 bg-primary-600 text-white rounded-xl font-bold overflow-hidden transition-transform hover:scale-105 active:scale-95 group">
+                        <span class="relative z-10">Get Started</span>
+                        <div class="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                    </button>
+                    <button class="px-8 py-4 bg-white text-slate-700 border border-slate-200 rounded-xl font-bold hover:bg-slate-50 transition-colors">Documentation</button>
+                </div>
+            </div>
+
+            <div class="relative group">
+                <div class="absolute -inset-4 bg-primary-100 rounded-[2rem] blur-2xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                <div class="relative aspect-square rounded-[2rem] overflow-hidden shadow-2xl bg-slate-100">
+                    <img src="hero_premium.png" alt="Dental Office" class="object-cover w-full h-full transition-transform duration-1000 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary-900/40 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6 glass-panel p-6 rounded-2xl animate-float">
+                        <div class="w-10 h-10 bg-primary-600 text-white rounded-xl flex items-center justify-center mb-4">
+                            <iconify-icon icon="solar:stars-minimalistic-bold-duotone" width="24"></iconify-icon>
+                        </div>
+                        <h4 class="text-slate-900 font-bold mb-1">Interactive Showcase</h4>
+                        <p class="text-xs text-slate-500 font-medium">Explore the cinematic patterns embedded in this library.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1) TYPOGRAPHY SECTION -->
+    <section id="typography" class="lab-section bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <span class="lab-label">01 / Typography System</span>
+            <div class="space-y-12">
+                <div class="grid md:grid-cols-3 gap-8 items-end border-b border-slate-100 pb-12">
+                    <div class="col-span-2">
+                        <h1 class="text-8xl font-black text-slate-900 tracking-tighter mb-4">Headline 1.</h1>
+                        <p class="text-sm font-mono text-slate-400">Plus Jakarta Sans / ExtraBold / 96px / -0.05em</p>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 items-end border-b border-slate-100 pb-12">
+                    <div class="col-span-2">
+                        <h2 class="text-6xl font-extrabold text-slate-900 tracking-tight mb-4">Headline 02 Component.</h2>
+                        <p class="text-sm font-mono text-slate-400">60px / -0.025em</p>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-16">
+                    <div class="space-y-6">
+                        <h3 class="text-2xl font-bold text-slate-800">Body Large Paradigm</h3>
+                        <p class="text-xl text-slate-500 leading-relaxed font-light">The foundational design language for the Tooth Fairy brand focuses on clarity, airiness, and a high-performance clinical feel.</p>
+                    </div>
+                    <div class="space-y-6">
+                        <h3 class="text-2xl font-bold text-slate-800">Standard Body Copy</h3>
+                        <p class="text-base text-slate-600 leading-relaxed">Our typography system ensures maximum legibility while maintaining a sophisticated, tech-forward aesthetic. We utilize Plus Jakarta Sans for its geometric precision and warmth.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2) COLOR SYSTEM -->
+    <section id="colors" class="lab-section">
+        <div class="max-w-7xl mx-auto px-6">
+            <span class="lab-label">02 / Color Matrix</span>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
+                <!-- Branding -->
+                <div class="space-y-4">
+                    <div class="h-40 bg-primary-600 rounded-2xl shadow-xl shadow-primary-200 p-4 flex flex-col justify-end">
+                        <span class="text-white font-bold text-xs">Blue-600</span>
+                        <span class="text-white/60 font-mono text-[10px]">#2563EB</span>
+                    </div>
+                    <span class="block text-xs font-bold text-slate-700">Primary Brand</span>
+                </div>
+                <div class="space-y-4">
+                    <div class="h-40 bg-primary-100 rounded-2xl p-4 flex flex-col justify-end">
+                        <span class="text-primary-700 font-bold text-xs">Blue-100</span>
+                        <span class="text-primary-700/60 font-mono text-[10px]">#DBEAFE</span>
+                    </div>
+                    <span class="block text-xs font-bold text-slate-700">Accent Tint</span>
+                </div>
+                <!-- Slate Neutrals -->
+                <div class="space-y-4">
+                    <div class="h-40 bg-slate-900 rounded-2xl p-4 flex flex-col justify-end">
+                        <span class="text-white font-bold text-xs">Slate-900</span>
+                        <span class="text-white/60 font-mono text-[10px]">#0F172A</span>
+                    </div>
+                    <span class="block text-xs font-bold text-slate-700">Deep Neutrals</span>
+                </div>
+                <!-- Semantic -->
+                <div class="space-y-4">
+                    <div class="h-40 bg-emerald-500 rounded-2xl p-4 flex flex-col justify-end">
+                        <span class="text-white font-bold text-xs">Success</span>
+                        <span class="text-white/60 font-mono text-[10px]">#10B981</span>
+                    </div>
+                    <span class="block text-xs font-bold text-slate-700">Semantic Success</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3) UI COMPONENTS -->
+    <section id="components" class="lab-section bg-[#f8fafc]">
+        <div class="max-w-7xl mx-auto px-6">
+            <span class="lab-label">03 / UI Component Lab</span>
+            
+            <div class="space-y-24">
+                <!-- Buttons -->
+                <div class="space-y-8">
+                    <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest">Action Elements</h4>
+                    <div class="flex flex-wrap gap-8 items-center bg-white p-12 rounded-3xl border border-slate-100">
+                        <button class="relative px-8 py-4 bg-primary-600 text-white rounded-xl font-bold overflow-hidden shadow-lg shadow-primary-200 transition-transform hover:-translate-y-1">
+                            Primary CTA
+                        </button>
+                        <button class="px-8 py-4 bg-white text-primary-600 border-2 border-primary-600 rounded-xl font-bold hover:bg-primary-50 transition-colors">
+                            Outline Secondary
+                        </button>
+                        <button class="flex items-center gap-2 text-primary-600 font-bold hover:gap-4 transition-all">
+                            Text Action <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cards & Hover -->
+                <div class="space-y-8">
+                    <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest">Interactive Surfaces (Flashlight Reveal)</h4>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <!-- Flashlight Card -->
+                        <div class="flashlight-card bg-white p-10 rounded-[2rem] border border-slate-200 transition-all hover:shadow-2xl hover:-translate-y-2">
+                            <div class="w-14 h-14 bg-primary-100 text-primary-600 rounded-xl flex items-center justify-center mb-8">
+                                <iconify-icon icon="solar:mask-happly-bold-duotone" width="32"></iconify-icon>
+                            </div>
+                            <h3 class="text-2xl font-bold text-slate-900 mb-4 tracking-tight">Cosmetic Precision</h3>
+                            <p class="text-slate-500 leading-relaxed font-medium">Advanced interactive patterns mapped for clinical clarity and conversion efficiency.</p>
+                        </div>
+
+                        <!-- Info Card -->
+                        <div class="bg-slate-900 p-10 rounded-[2rem] relative overflow-hidden group">
+                            <div class="absolute -right-8 -top-8 w-32 h-32 bg-primary-600/30 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+                            <iconify-icon icon="solar:settings-bold-duotone" class="text-primary-500 mb-8" width="48"></iconify-icon>
+                            <h3 class="text-2xl font-bold text-white mb-4 tracking-tight">Technical Hub</h3>
+                            <p class="text-slate-400 leading-relaxed">Dark-themed surfaces utilizing glassmorphism overlays for technical data display.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4) MOTION -->
+    <section id="motion" class="lab-section bg-slate-950 text-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
+            <span class="lab-label !text-slate-700">04 / Kinetic Motion Specs</span>
+            <div class="grid md:grid-cols-3 gap-16 py-12">
+                <div class="space-y-6">
+                    <div class="w-20 h-20 bg-primary-600 rounded-full mx-auto flex items-center justify-center animate-float">
+                        <iconify-icon icon="solar:rocket-bold-duotone" width="32"></iconify-icon>
+                    </div>
+                    <h4 class="font-bold">Organic Float</h4>
+                    <p class="text-xs text-slate-500">6s duration / ease-in-out</p>
+                </div>
+                <div class="space-y-6">
+                    <div class="w-20 h-20 border border-white/20 rounded-full mx-auto flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-primary-500/20 animate-shimmer"></div>
+                        <iconify-icon icon="solar:bolt-bold-duotone" class="text-primary-400" width="32"></iconify-icon>
+                    </div>
+                    <h4 class="font-bold">Shimmer Sweep</h4>
+                    <p class="text-xs text-slate-500">Continuous 2s linear loop</p>
+                </div>
+                <div class="space-y-6">
+                    <div class="w-20 h-20 bg-white/5 border border-white/10 rounded-2xl mx-auto flex items-center justify-center group cursor-crosshair">
+                        <iconify-icon icon="solar:widget-bold-duotone" class="transition-transform group-hover:rotate-90 group-hover:scale-125 text-primary-500" width="32"></iconify-icon>
+                    </div>
+                    <h4 class="font-bold">Interaction Feedback</h4>
+                    <p class="text-xs text-slate-500">Displacement on hover state</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-20 text-center border-t border-slate-100">
+        <p class="text-[10px] font-bold text-slate-300 uppercase tracking-[0.5em]">© 2026 Tooth Fairy Premium Pattern Protocol</p>
+    </footer>
+
+    <!-- Global Mouse Interaction for Flashlight -->
+    <script>
+        window.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth) * 100;
+            const y = (e.clientY / window.innerHeight) * 100;
+            document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+            document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+        });
+
+        document.querySelectorAll('.flashlight-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body>
+</html>

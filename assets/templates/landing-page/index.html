@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Dr. Elias Gonçalves Sousa — Especialista em Implante Dentário, Estética Dental e Clínica Geral em Uberaba/MG. Agende sua avaliação gratuita." />
+  <title>Dr. Elias Gonçalves Sousa | Implante Dentário & Estética em Uberaba</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ===================== CSS VARIABLES ===================== */
+    :root {
+      --primary:       #1B4F8C;
+      --primary-dark:  #0D3060;
+      --primary-light: #2E6FBF;
+      --accent:        #3AAFA9;
+      --accent-light:  #DFFAF8;
+      --cta:           #FF5722;
+      --cta-hover:     #E64A19;
+      --whatsapp:      #25D366;
+      --whatsapp-hover:#1EBE57;
+      --bg:            #FAFBFD;
+      --bg-alt:        #F0F4F9;
+      --text:          #1A202C;
+      --text-mid:      #4A5568;
+      --text-light:    #718096;
+      --white:         #FFFFFF;
+      --border:        #E2E8F0;
+      --shadow-sm:     0 2px 8px rgba(27,79,140,.08);
+      --shadow-md:     0 8px 32px rgba(27,79,140,.14);
+      --shadow-lg:     0 20px 60px rgba(27,79,140,.18);
+      --radius:        12px;
+      --radius-lg:     20px;
+      --transition:    0.3s ease;
+    }
+
+    /* ===================== RESET ===================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ===================== UTILITIES ===================== */
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      color: var(--primary-dark);
+      line-height: 1.2;
+    }
+    .section-subtitle {
+      color: var(--text-mid);
+      font-size: 1.05rem;
+      margin-top: .5rem;
+    }
+    .tag {
+      display: inline-block;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: .8rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .3rem .9rem;
+      border-radius: 50px;
+      margin-bottom: 1rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: .85rem 1.8rem;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+      white-space: nowrap;
+    }
+    .btn-cta {
+      background: var(--cta);
+      color: var(--white);
+      box-shadow: 0 4px 20px rgba(255,87,34,.35);
+    }
+    .btn-cta:hover { background: var(--cta-hover); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,87,34,.4); }
+    .btn-whatsapp {
+      background: var(--whatsapp);
+      color: var(--white);
+      box-shadow: 0 4px 20px rgba(37,211,102,.3);
+    }
+    .btn-whatsapp:hover { background: var(--whatsapp-hover); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+    .btn-outline:hover { background: var(--primary); color: var(--white); }
+
+    /* ===================== NAVBAR ===================== */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow var(--transition);
+    }
+    .navbar.scrolled { box-shadow: var(--shadow-md); }
+    .navbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+    .nav-logo .name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    .nav-logo .subtitle {
+      font-size: .7rem;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    .nav-links a {
+      font-size: .9rem;
+      font-weight: 500;
+      color: var(--text-mid);
+      transition: color var(--transition);
+    }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+    .nav-whatsapp {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--whatsapp);
+      background: rgba(37,211,102,.1);
+      padding: .45rem 1rem;
+      border-radius: 50px;
+      transition: var(--transition);
+    }
+    .nav-whatsapp:hover { background: var(--whatsapp); color: var(--white); }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: .4rem;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--primary-dark);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    /* ===================== HERO ===================== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding-top: 70px;
+      background: linear-gradient(135deg, #0D3060 0%, #1B4F8C 45%, #2E6FBF 100%);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: .15;
+    }
+    .hero-blob-1 {
+      width: 500px; height: 500px;
+      background: var(--accent);
+      top: -100px; right: -100px;
+    }
+    .hero-blob-2 {
+      width: 300px; height: 300px;
+      background: #90CAF9;
+      bottom: -50px; left: 10%;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      padding: 4rem 0;
+    }
+    .hero-content { color: var(--white); }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25);
+      backdrop-filter: blur(8px);
+      color: var(--white);
+      font-size: .8rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: .4rem 1rem;
+      border-radius: 50px;
+      margin-bottom: 1.5rem;
+    }
+    .hero-badge i { color: #FFD700; }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+    }
+    .hero-title span { color: #90E0EF; }
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,.8);
+      margin-bottom: 2rem;
+      max-width: 480px;
+      line-height: 1.7;
+    }
+    .hero-cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .hero-cta-group .btn-cta {
+      font-size: 1.05rem;
+      padding: 1rem 2rem;
+    }
+    .hero-cta-group .btn-whatsapp {
+      font-size: 1.05rem;
+      padding: 1rem 2rem;
+    }
+    .hero-trust {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .hero-trust-item {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      color: rgba(255,255,255,.75);
+      font-size: .85rem;
+    }
+    .hero-trust-item i { color: #FFD700; font-size: .9rem; }
+    .hero-image-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+    .hero-photo-card {
+      position: relative;
+      width: 380px;
+      max-width: 100%;
+    }
+    .hero-photo-placeholder {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: linear-gradient(135deg, rgba(255,255,255,.15), rgba(255,255,255,.05));
+      border: 2px dashed rgba(255,255,255,.3);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,.6);
+      font-size: .9rem;
+      text-align: center;
+      gap: 1rem;
+      padding: 2rem;
+    }
+    .hero-photo-placeholder i { font-size: 3rem; opacity: .5; }
+    .hero-photo-placeholder .placeholder-note {
+      font-size: .75rem;
+      opacity: .7;
+      line-height: 1.5;
+    }
+    .hero-card-badge {
+      position: absolute;
+      bottom: -20px;
+      left: -20px;
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+    .hero-card-badge .icon {
+      width: 44px; height: 44px;
+      background: var(--accent-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 1.1rem;
+    }
+    .hero-card-badge .text strong {
+      display: block;
+      color: var(--primary-dark);
+      font-size: .95rem;
+      font-weight: 700;
+    }
+    .hero-card-badge .text span {
+      font-size: .75rem;
+      color: var(--text-mid);
+    }
+    .hero-card-badge-2 {
+      position: absolute;
+      top: 20px;
+      right: -20px;
+      background: var(--primary-dark);
+      border-radius: var(--radius);
+      padding: .75rem 1rem;
+      box-shadow: var(--shadow-lg);
+      color: var(--white);
+      text-align: center;
+    }
+    .hero-card-badge-2 .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      line-height: 1;
+      color: #FFD700;
+    }
+    .hero-card-badge-2 .lbl {
+      font-size: .7rem;
+      color: rgba(255,255,255,.75);
+      white-space: nowrap;
+    }
+
+    /* ===================== SOBRE ===================== */
+    .sobre {
+      padding: 6rem 0;
+      background: var(--white);
+    }
+    .sobre-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .sobre-photo {
+      position: relative;
+    }
+    .sobre-photo-placeholder {
+      width: 100%;
+      aspect-ratio: 4/5;
+      background: linear-gradient(135deg, var(--bg-alt), var(--accent-light));
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-light);
+      font-size: .9rem;
+      text-align: center;
+      gap: 1rem;
+      padding: 2rem;
+      border: 2px dashed var(--border);
+    }
+    .sobre-photo-placeholder i { font-size: 3rem; color: var(--accent); opacity: .5; }
+    .sobre-photo-badge {
+      position: absolute;
+      bottom: 24px;
+      right: -20px;
+      background: var(--primary);
+      color: var(--white);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.4rem;
+      box-shadow: var(--shadow-md);
+      text-align: center;
+    }
+    .sobre-photo-badge .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .sobre-photo-badge .lbl {
+      font-size: .7rem;
+      color: rgba(255,255,255,.8);
+      margin-top: .2rem;
+    }
+    .sobre-content .cro-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      color: var(--text-mid);
+      font-size: .8rem;
+      font-weight: 600;
+      padding: .35rem .9rem;
+      border-radius: 50px;
+      margin-top: 1.5rem;
+    }
+    .sobre-content .cro-badge i { color: var(--primary); }
+    .sobre-text {
+      color: var(--text-mid);
+      line-height: 1.8;
+      margin: 1.25rem 0;
+      font-size: 1.02rem;
+    }
+    .sobre-highlight {
+      background: linear-gradient(135deg, var(--accent-light), #E8F4FD);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1.1rem 1.4rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+      color: var(--primary-dark);
+      font-size: 1.05rem;
+      font-weight: 500;
+    }
+    .sobre-specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .75rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .sobre-spec-item {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-size: .9rem;
+      color: var(--text-mid);
+    }
+    .sobre-spec-item i {
+      color: var(--accent);
+      font-size: 1rem;
+      width: 20px;
+      flex-shrink: 0;
+    }
+
+    /* ===================== TRATAMENTOS ===================== */
+    .tratamentos {
+      padding: 6rem 0;
+      background: var(--bg-alt);
+    }
+    .tratamentos-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .tratamentos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .trat-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.75rem;
+      border: 1px solid var(--border);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .trat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--primary);
+      transform: scaleX(0);
+      transition: var(--transition);
+      transform-origin: left;
+    }
+    .trat-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: transparent; }
+    .trat-card:hover::before { transform: scaleX(1); }
+    .trat-card:nth-child(1)::before { background: #1B4F8C; }
+    .trat-card:nth-child(2)::before { background: #3AAFA9; }
+    .trat-card:nth-child(3)::before { background: #FF5722; }
+    .trat-card:nth-child(4)::before { background: #9C27B0; }
+    .trat-card:nth-child(5)::before { background: #E91E63; }
+    .trat-icon {
+      width: 56px; height: 56px;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .trat-card:nth-child(1) .trat-icon { background: #E3F0FF; color: #1B4F8C; }
+    .trat-card:nth-child(2) .trat-icon { background: var(--accent-light); color: var(--accent); }
+    .trat-card:nth-child(3) .trat-icon { background: #FFF3F0; color: #FF5722; }
+    .trat-card:nth-child(4) .trat-icon { background: #F3E5F5; color: #9C27B0; }
+    .trat-card:nth-child(5) .trat-icon { background: #FCE4EC; color: #E91E63; }
+    .trat-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: .6rem;
+    }
+    .trat-card p {
+      font-size: .9rem;
+      color: var(--text-mid);
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+    .trat-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--primary);
+      transition: gap var(--transition);
+    }
+    .trat-card:hover .trat-link { gap: .7rem; }
+
+    /* ===================== DIFERENCIAIS ===================== */
+    .diferenciais {
+      padding: 6rem 0;
+      background: var(--primary-dark);
+      position: relative;
+      overflow: hidden;
+    }
+    .diferenciais::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: var(--primary);
+      border-radius: 50%;
+      top: -200px; right: -200px;
+      opacity: .3;
+    }
+    .diferenciais-inner { position: relative; z-index: 1; }
+    .diferenciais-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .diferenciais-header .section-title { color: var(--white); }
+    .diferenciais-header .section-subtitle { color: rgba(255,255,255,.7); }
+    .diferenciais-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .dif-card {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: var(--transition);
+      backdrop-filter: blur(8px);
+    }
+    .dif-card:hover {
+      background: rgba(255,255,255,.13);
+      transform: translateY(-4px);
+    }
+    .dif-icon {
+      width: 64px; height: 64px;
+      background: rgba(58,175,169,.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      color: var(--accent);
+      margin: 0 auto 1.25rem;
+    }
+    .dif-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: .5rem;
+    }
+    .dif-card p {
+      font-size: .85rem;
+      color: rgba(255,255,255,.65);
+      line-height: 1.6;
+    }
+
+    /* ===================== DEPOIMENTOS ===================== */
+    .depoimentos {
+      padding: 6rem 0;
+      background: var(--white);
+    }
+    .depoimentos-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .depoimentos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .dep-card {
+      background: var(--bg-alt);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      border: 1px solid var(--border);
+      position: relative;
+      transition: var(--transition);
+    }
+    .dep-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .dep-card::before {
+      content: '"';
+      position: absolute;
+      top: 1.2rem; right: 1.5rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      color: var(--accent);
+      opacity: .15;
+      line-height: 1;
+    }
+    .dep-stars {
+      color: #FFD700;
+      font-size: 1rem;
+      letter-spacing: .1em;
+      margin-bottom: 1rem;
+    }
+    .dep-text {
+      font-size: .95rem;
+      color: var(--text-mid);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+    .dep-author {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+    .dep-avatar {
+      width: 44px; height: 44px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-weight: 700;
+      font-size: .95rem;
+      flex-shrink: 0;
+    }
+    .dep-name {
+      font-weight: 600;
+      color: var(--primary-dark);
+      font-size: .9rem;
+    }
+    .dep-procedure {
+      font-size: .78rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* ===================== CTA FORMULÁRIO ===================== */
+    .cta-form {
+      padding: 6rem 0;
+      background: linear-gradient(135deg, var(--bg-alt) 0%, var(--accent-light) 100%);
+    }
+    .cta-form-inner {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .cta-form-text .section-title { color: var(--primary-dark); }
+    .cta-form-text p {
+      color: var(--text-mid);
+      margin: 1rem 0 1.5rem;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+    .cta-form-perks {
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+    }
+    .cta-perk {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      font-size: .95rem;
+      color: var(--text-mid);
+    }
+    .cta-perk i {
+      color: var(--whatsapp);
+      font-size: 1rem;
+      width: 20px;
+    }
+    .form-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+    }
+    .form-card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: .4rem;
+    }
+    .form-card .form-sub {
+      font-size: .85rem;
+      color: var(--text-mid);
+      margin-bottom: 1.75rem;
+    }
+    .form-group {
+      margin-bottom: 1.1rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: .4rem;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: .85rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-size: .95rem;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(27,79,140,.12);
+      background: var(--white);
+    }
+    .form-group select { cursor: pointer; }
+    .form-submit {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1rem;
+      border-radius: var(--radius);
+      margin-top: .5rem;
+      justify-content: center;
+    }
+    .form-note {
+      text-align: center;
+      font-size: .78rem;
+      color: var(--text-light);
+      margin-top: .75rem;
+    }
+    .form-note i { color: var(--whatsapp); }
+
+    /* ===================== LOCALIZAÇÃO ===================== */
+    .localizacao {
+      padding: 6rem 0;
+      background: var(--white);
+    }
+    .localizacao-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .localizacao-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .map-embed {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      height: 380px;
+    }
+    .map-embed iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .contato-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .contato-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .contato-icon {
+      width: 48px; height: 48px;
+      background: var(--bg-alt);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .contato-item strong {
+      display: block;
+      font-size: .9rem;
+      color: var(--primary-dark);
+      font-weight: 700;
+      margin-bottom: .2rem;
+    }
+    .contato-item span, .contato-item a {
+      font-size: .9rem;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+    .contato-item a:hover { color: var(--primary); }
+    .horarios-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .4rem .75rem;
+      margin-top: .4rem;
+    }
+    .horario-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: .85rem;
+      color: var(--text-mid);
+    }
+    .horario-row .dia { font-weight: 500; }
+    .social-links {
+      display: flex;
+      gap: .75rem;
+      margin-top: .25rem;
+    }
+    .social-link {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+    .social-link.instagram {
+      background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      color: var(--white);
+    }
+    .social-link.instagram:hover { transform: scale(1.1); opacity: .9; }
+    .social-link.whatsapp {
+      background: var(--whatsapp);
+      color: var(--white);
+    }
+    .social-link.whatsapp:hover { transform: scale(1.1); background: var(--whatsapp-hover); }
+    .whatsapp-btn-contato {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: var(--whatsapp);
+      color: var(--white);
+      font-weight: 600;
+      font-size: .9rem;
+      padding: .7rem 1.4rem;
+      border-radius: 50px;
+      margin-top: .5rem;
+      transition: var(--transition);
+      width: fit-content;
+    }
+    .whatsapp-btn-contato:hover { background: var(--whatsapp-hover); transform: translateY(-2px); }
+
+    /* ===================== RODAPÉ ===================== */
+    .footer {
+      background: var(--primary-dark);
+      color: rgba(255,255,255,.75);
+      padding: 3rem 0 1.5rem;
+    }
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      margin-bottom: 1.5rem;
+    }
+    .footer-brand .name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--white);
+      font-weight: 700;
+      display: block;
+      margin-bottom: .3rem;
+    }
+    .footer-brand .spec {
+      font-size: .8rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .footer-brand p {
+      margin-top: .75rem;
+      font-size: .85rem;
+      line-height: 1.6;
+    }
+    .footer-brand .cnpj {
+      margin-top: .75rem;
+      font-size: .75rem;
+      color: rgba(255,255,255,.45);
+    }
+    .footer-col h4 {
+      color: var(--white);
+      font-size: .9rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .footer-col ul { display: flex; flex-direction: column; gap: .5rem; }
+    .footer-col ul li a {
+      font-size: .85rem;
+      color: rgba(255,255,255,.65);
+      transition: color var(--transition);
+    }
+    .footer-col ul li a:hover { color: var(--accent); }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .75rem;
+    }
+    .footer-bottom p { font-size: .8rem; }
+    .footer-bottom .lgpd {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .footer-bottom .lgpd a {
+      font-size: .8rem;
+      color: rgba(255,255,255,.55);
+      transition: color var(--transition);
+    }
+    .footer-bottom .lgpd a:hover { color: var(--white); }
+
+    /* ===================== WHATSAPP FLUTUANTE ===================== */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 999;
+      width: 60px; height: 60px;
+      background: var(--whatsapp);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      color: var(--white);
+      box-shadow: 0 4px 24px rgba(37,211,102,.45);
+      transition: var(--transition);
+      animation: pulse-green 2.5s infinite;
+    }
+    .whatsapp-float:hover {
+      background: var(--whatsapp-hover);
+      transform: scale(1.1);
+      animation: none;
+    }
+    @keyframes pulse-green {
+      0%, 100% { box-shadow: 0 4px 24px rgba(37,211,102,.45); }
+      50% { box-shadow: 0 4px 36px rgba(37,211,102,.7), 0 0 0 10px rgba(37,211,102,.1); }
+    }
+    .whatsapp-float-tooltip {
+      position: absolute;
+      right: 70px;
+      background: var(--primary-dark);
+      color: var(--white);
+      font-size: .8rem;
+      font-weight: 600;
+      padding: .4rem .9rem;
+      border-radius: 50px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .whatsapp-float:hover .whatsapp-float-tooltip { opacity: 1; }
+
+    /* ===================== MOBILE MENU ===================== */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 70px; left: 0; right: 0;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 999;
+      box-shadow: var(--shadow-md);
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-mid);
+      padding: .5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-nav .btn { justify-content: center; }
+
+    /* ===================== ANIMATIONS ===================== */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 1024px) {
+      .diferenciais-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 2.5rem 0;
+      }
+      .hero-image-wrap { order: -1; }
+      .hero-photo-card { width: 260px; }
+      .hero-subtitle { margin: 0 auto 2rem; }
+      .hero-cta-group { justify-content: center; }
+      .hero-trust { justify-content: center; }
+      .hero-card-badge { left: 0; bottom: -15px; }
+      .hero-card-badge-2 { right: 0; top: 10px; }
+
+      .sobre-inner { grid-template-columns: 1fr; }
+      .sobre-photo { order: -1; max-width: 300px; margin: 0 auto; }
+      .sobre-photo-badge { right: 0; }
+
+      .tratamentos-grid { grid-template-columns: 1fr 1fr; }
+
+      .diferenciais-grid { grid-template-columns: 1fr 1fr; }
+
+      .depoimentos-grid { grid-template-columns: 1fr; }
+
+      .cta-form-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+
+      .localizacao-inner { grid-template-columns: 1fr; }
+      .map-embed { height: 280px; }
+
+      .footer-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .tratamentos-grid { grid-template-columns: 1fr; }
+      .diferenciais-grid { grid-template-columns: 1fr; }
+      .hero-cta-group { flex-direction: column; align-items: center; }
+      .hero-cta-group .btn { width: 100%; justify-content: center; }
+      .sobre-specs { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="#hero" class="nav-logo">
+        <span class="name">Dr. Elias Gonçalves Sousa</span>
+        <span class="subtitle">Odontologia Avançada · Uberaba</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#tratamentos">Tratamentos</a></li>
+        <li><a href="#diferenciais">Diferenciais</a></li>
+        <li><a href="#depoimentos">Depoimentos</a></li>
+        <li><a href="#localizacao">Contato</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="https://wa.me/5534999999999?text=Olá%20Dr.%20Elias%2C%20gostaria%20de%20agendar%20uma%20consulta!" class="nav-whatsapp" target="_blank" rel="noopener">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </a>
+      </div>
+
+      <div class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#sobre" class="mobile-link">Sobre o Dr. Elias</a>
+  <a href="#tratamentos" class="mobile-link">Tratamentos</a>
+  <a href="#diferenciais" class="mobile-link">Diferenciais</a>
+  <a href="#depoimentos" class="mobile-link">Depoimentos</a>
+  <a href="#localizacao" class="mobile-link">Localização</a>
+  <a href="https://wa.me/5534999999999?text=Olá%20Dr.%20Elias%2C%20gostaria%20de%20agendar%20uma%20consulta!" class="btn btn-whatsapp" target="_blank" rel="noopener">
+    <i class="fab fa-whatsapp"></i> Falar pelo WhatsApp
+  </a>
+</div>
+
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="hero">
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+
+  <div class="container">
+    <div class="hero-inner">
+      <!-- Content -->
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fas fa-star"></i>
+          Especialista em Implante Dentário em Uberaba
+        </div>
+
+        <h1 class="hero-title">
+          Dr. Elias está de volta.<br/>
+          <span>Agende sua avaliação</span><br/>
+          gratuita.
+        </h1>
+
+        <p class="hero-subtitle">
+          Implante dentário, estética e cuidado real — com quem cuida de você há anos em Uberaba. Atendimento humanizado, direto com o especialista, sem intermediários.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="https://wa.me/5534999999999?text=Olá%20Dr.%20Elias%2C%20gostaria%20de%20agendar%20minha%20avaliação%20gratuita!" class="btn btn-whatsapp" target="_blank" rel="noopener">
+            <i class="fab fa-whatsapp"></i> Agendar pelo WhatsApp
+          </a>
+          <a href="#cta-form" class="btn btn-cta">
+            <i class="fas fa-calendar-check"></i> Avalição Gratuita
+          </a>
+        </div>
+
+        <div class="hero-trust">
+          <div class="hero-trust-item">
+            <i class="fas fa-star"></i>
+            <span>+500 pacientes atendidos em Uberaba</span>
+          </div>
+          <div class="hero-trust-item">
+            <i class="fas fa-shield-alt"></i>
+            <span>CRO regularizado</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Imagem -->
+      <div class="hero-image-wrap">
+        <div class="hero-photo-card">
+          <!-- SUBSTITUIR: insira a tag <img> abaixo com a foto do Dr. Elias -->
+          <!-- Exemplo: <img src="foto-dr-elias.jpg" alt="Dr. Elias Gonçalves Sousa" style="width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:20px;" /> -->
+          <div class="hero-photo-placeholder">
+            <i class="fas fa-user-md"></i>
+            <div>
+              <strong>Foto do Dr. Elias</strong>
+              <p class="placeholder-note">Substituir por uma foto humanizada<br/>do profissional (tom próximo, não corporativo)</p>
+            </div>
+          </div>
+
+          <!-- Badge inferior esquerdo -->
+          <div class="hero-card-badge">
+            <div class="icon"><i class="fas fa-tooth"></i></div>
+            <div class="text">
+              <strong>Implante Dentário</strong>
+              <span>Especialidade principal</span>
+            </div>
+          </div>
+
+          <!-- Badge superior direito -->
+          <div class="hero-card-badge-2">
+            <div class="num">15+</div>
+            <div class="lbl">anos de<br/>experiência</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== SOBRE O DR. ELIAS ===================== -->
+<section class="sobre" id="sobre">
+  <div class="container">
+    <div class="sobre-inner">
+      <!-- Foto -->
+      <div class="sobre-photo fade-up">
+        <!-- SUBSTITUIR: insira a tag <img> abaixo com a foto humanizada do Dr. Elias -->
+        <!-- Exemplo: <img src="foto-consultorio.jpg" alt="Dr. Elias no consultório" style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:20px;" /> -->
+        <div class="sobre-photo-placeholder">
+          <i class="fas fa-user-md"></i>
+          <div>
+            <strong>Foto humanizada</strong>
+            <p style="font-size:.8rem;opacity:.7;margin-top:.3rem;">Substituir por foto no consultório<br/>ou em atendimento</p>
+          </div>
+        </div>
+        <div class="sobre-photo-badge">
+          <div class="num">15+</div>
+          <div class="lbl">Anos cuidando<br/>de Uberaba</div>
+        </div>
+      </div>
+
+      <!-- Conteúdo -->
+      <div class="sobre-content fade-up">
+        <span class="tag">Conheça o especialista</span>
+        <h2 class="section-title">Cuidado real,<br/>com quem realmente<br/>entende de você.</h2>
+
+        <div class="sobre-highlight">
+          "Estou de volta e pronto para cuidar do seu sorriso com a mesma dedicação de sempre."
+        </div>
+
+        <p class="sobre-text">
+          O Dr. Elias Gonçalves Sousa é cirurgião-dentista com mais de 15 anos de experiência no atendimento em Uberaba (MG), especializado em implante dentário, estética dental, clínica geral e prótese. Após um período de afastamento, está retomando os atendimentos com a mesma qualidade e o mesmo carinho que conquistaram centenas de pacientes na região.
+        </p>
+
+        <p class="sobre-text">
+          Seu diferencial não é apenas técnico: é o atendimento humanizado, personalizado e sem intermediários — diretamente com o especialista que vai acompanhar cada etapa do seu tratamento.
+        </p>
+
+        <div class="sobre-specs">
+          <div class="sobre-spec-item">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Especialista em Implantodontia</span>
+          </div>
+          <div class="sobre-spec-item">
+            <i class="fas fa-certificate"></i>
+            <span>CRO/MG ativo e regularizado</span>
+          </div>
+          <div class="sobre-spec-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Uberaba, São Benedito</span>
+          </div>
+          <div class="sobre-spec-item">
+            <i class="fas fa-heart"></i>
+            <span>Atendimento humanizado</span>
+          </div>
+          <div class="sobre-spec-item">
+            <i class="fas fa-user-check"></i>
+            <span>Direto com o especialista</span>
+          </div>
+          <div class="sobre-spec-item">
+            <i class="fas fa-tooth"></i>
+            <span>Estética & Clínica Geral</span>
+          </div>
+        </div>
+
+        <div class="cro-badge">
+          <i class="fas fa-id-badge"></i>
+          CRO/MG — Odontologia Avançada Dr. Elias Gonçalves Sousa
+        </div>
+
+        <br/>
+        <a href="https://wa.me/5534999999999?text=Olá%20Dr.%20Elias%2C%20gostaria%20de%20saber%20mais%20sobre%20os%20tratamentos!" class="btn btn-whatsapp" target="_blank" rel="noopener" style="margin-top:1rem;">
+          <i class="fab fa-whatsapp"></i> Falar com o Dr. Elias
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== TRATAMENTOS ===================== -->
+<section class="tratamentos" id="tratamentos">
+  <div class="container">
+    <div class="tratamentos-header fade-up">
+      <span class="tag">Nossos Tratamentos</span>
+      <h2 class="section-title">Especialidades que transformam<br/>sorrisos e vidas</h2>
+      <p class="section-subtitle">Cada tratamento é pensado para você — focado no resultado que você vai sentir, não apenas no procedimento.</p>
+    </div>
+
+    <div class="tratamentos-grid">
+      <!-- Card 1 -->
+      <div class="trat-card fade-up">
+        <div class="trat-icon"><i class="fas fa-tooth"></i></div>
+        <h3>Implante Dentário</h3>
+        <p>Recupere a função e a beleza do seu sorriso de forma definitiva. Implantes com tecnologia moderna e resultado natural, colocados diretamente pelo Dr. Elias.</p>
+        <a href="https://wa.me/5534999999999?text=Olá%20Dr.%20Elias%2C%20quero%20saber%20sobre%20Implante%20Dentário!" class="trat-link" target="_blank">
+          Quero saber mais <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="trat-card fade-up">
+        <div class="trat-icon"><i class="fas fa-smile-beam"></i></div>
+        <h3>Estética Dental</h3>
+        <p>Clareamento dental, facetas e lentes de contato para você ter o sorriso que sempre quis. Visual natural, resultado que dura.</p>
+        <a href="https://wa.me/5534999999999?text=Olá%20Dr.%20Elias%2C%20quero%20saber%20sobre%20Estética%20Dental!" class="trat-link" target="_blank">
+          Quero saber mais <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="trat-card fade-up">
+        <div class="trat-icon"><i class="fas fa-stethoscope"></i></div>
+        <h3>Clínica Geral</h3>
+        <p>Consultas de rotina, limpeza, restaurações e cuidado completo para toda a família. Prevenção que evita problemas maiores no futuro.</p>
+        <a href="https://wa.me/5534999999999?text=Olá%20Dr.%20Elias%2C%20quero%20saber%20sobre%20Clínica%20Geral!" class="trat-link" target="_blank">
+          Quero saber mais <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="trat-card fade-up">
+        <div class="trat-icon"><i class="fas fa-teeth"></i></div>
+        <h3>Prótese Dentária</h3>
+        <p>Próteses fixas ou removíveis adaptadas ao seu caso, para devolver conforto, mastigação e autoestima com resultado estético de excelência.</p>
+        <a href="https://wa.me/5534999999999?text=Olá%20Dr.%20Elias%2C%20quero%20saber%20sobre%20Prótese%20Dentária!" class="trat-link" target="_blank">
+          Quero saber mais <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="trat-card fade-up">
+        <div class="trat-icon"><i class="fas fa-cut"></i></div>
+        <h3>Cirurgia Oral</h3>
+        <p>Extrações, incluindo dentes do siso, cirurgias pré-implante e procedimentos orais realizados com toda segurança e cuidado pelo especialista.</p>
+        <a href="https://wa.me/5534999999999?text=Olá%20Dr.%20Elias%2C%20quero%20saber%20sobre%20Cirurgia%20Oral!" class="trat-link" target="_blank">
+          Quero saber mais <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== DIFERENCIAIS ===================== -->
+<section class="diferenciais" id="diferenciais">
+  <div class="container diferenciais-inner">
+    <div class="diferenciais-header fade-up">
+      <span class="tag" style="background:rgba(58,175,169,.2);color:var(--accent);">Por que nos escolher</span>
+      <h2 class="section-title">Por que escolher<br/>o Dr. Elias?</h2>
+      <p class="section-subtitle">Mais do que técnica — um compromisso verdadeiro com o seu bem-estar.</p>
+    </div>
+
+    <div class="diferenciais-grid">
+      <div class="dif-card fade-up">
+        <div class="dif-icon"><i class="fas fa-user-md"></i></div>
+        <h3>Direto com o especialista</h3>
+        <p>Você é atendido pessoalmente pelo Dr. Elias — sem repassar para outros profissionais. Seu tratamento tem um rosto e um compromisso.</p>
+      </div>
+
+      <div class="dif-card fade-up">
+        <div class="dif-icon"><i class="fas fa-award"></i></div>
+        <h3>+15 anos de experiência</h3>
+        <p>Mais de uma década atendendo pacientes em Uberaba, com centenas de casos de implante dentário e estética realizados com excelência.</p>
+      </div>
+
+      <div class="dif-card fade-up">
+        <div class="dif-icon"><i class="fas fa-heart"></i></div>
+        <h3>Atendimento humanizado</h3>
+        <p>Medo de dentista? O Dr. Elias é conhecido pelo cuidado, paciência e atenção genuína com cada paciente — sem pressa, sem pressão.</p>
+      </div>
+
+      <div class="dif-card fade-up">
+        <div class="dif-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <h3>Localização central</h3>
+        <p>Consultório no coração de Uberaba — bairro São Benedito — de fácil acesso para toda a cidade e região metropolitana.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== DEPOIMENTOS ===================== -->
+<section class="depoimentos" id="depoimentos">
+  <div class="container">
+    <div class="depoimentos-header fade-up">
+      <span class="tag">Depoimentos</span>
+      <h2 class="section-title">O que dizem nossos pacientes</h2>
+      <p class="section-subtitle">Quem já foi atendido pelo Dr. Elias sabe o que esperar: cuidado real e resultado que transforma.</p>
+    </div>
+
+    <div class="depoimentos-grid">
+      <!-- Depoimento 1 -->
+      <div class="dep-card fade-up">
+        <div class="dep-stars">★★★★★</div>
+        <p class="dep-text">
+          "Eu tinha muito medo de fazer implante, mas o Dr. Elias me deixou completamente tranquila do início ao fim. O resultado ficou incrível e natural. Indico para todos!"
+        </p>
+        <div class="dep-author">
+          <div class="dep-avatar">M.S</div>
+          <div>
+            <div class="dep-name">M. S.</div>
+            <div class="dep-procedure">Implante Dentário</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Depoimento 2 -->
+      <div class="dep-card fade-up">
+        <div class="dep-stars">★★★★★</div>
+        <p class="dep-text">
+          "Fiz clareamento e facetas com o Dr. Elias e fiquei encantada! Além do resultado perfeito, ele explicou tudo com muita calma. Profissional excelente e atencioso."
+        </p>
+        <div class="dep-author">
+          <div class="dep-avatar" style="background:#E91E63;">A.R</div>
+          <div>
+            <div class="dep-name">A. R.</div>
+            <div class="dep-procedure">Estética Dental</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Depoimento 3 -->
+      <div class="dep-card fade-up">
+        <div class="dep-stars">★★★★★</div>
+        <p class="dep-text">
+          "Paciente do Dr. Elias há anos. Voltei assim que soube que ele retomou os atendimentos. É difícil encontrar um dentista que realmente se preocupa com o paciente como ele."
+        </p>
+        <div class="dep-author">
+          <div class="dep-avatar" style="background:#9C27B0;">J.F</div>
+          <div>
+            <div class="dep-name">J. F.</div>
+            <div class="dep-procedure">Paciente desde 2018</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nota dos depoimentos -->
+    <p style="text-align:center;font-size:.8rem;color:var(--text-light);margin-top:1.5rem;">
+      <i class="fas fa-info-circle"></i> Depoimentos ilustrativos. Substituir pelos depoimentos reais dos pacientes do Dr. Elias.
+    </p>
+  </div>
+</section>
+
+
+<!-- ===================== CTA FORMULÁRIO ===================== -->
+<section class="cta-form" id="cta-form">
+  <div class="container">
+    <div class="cta-form-inner">
+      <!-- Texto -->
+      <div class="cta-form-text fade-up">
+        <span class="tag">Avaliação gratuita</span>
+        <h2 class="section-title">Agende sua avaliação<br/>sem compromisso.</h2>
+        <p>
+          Dê o primeiro passo para o sorriso que você merece. Preencha o formulário e o Dr. Elias entrará em contato rapidamente pelo WhatsApp.
+        </p>
+        <div class="cta-form-perks">
+          <div class="cta-perk"><i class="fas fa-check-circle"></i> Avaliação inicial gratuita</div>
+          <div class="cta-perk"><i class="fas fa-check-circle"></i> Sem compromisso e sem pressão</div>
+          <div class="cta-perk"><i class="fas fa-check-circle"></i> Resposta rápida pelo WhatsApp</div>
+          <div class="cta-perk"><i class="fas fa-check-circle"></i> Atendimento direto com o especialista</div>
+        </div>
+      </div>
+
+      <!-- Formulário -->
+      <div class="form-card fade-up">
+        <h3>Quero agendar minha avaliação</h3>
+        <p class="form-sub">Preencha abaixo — leva menos de 30 segundos</p>
+
+        <form id="agendamento-form">
+          <div class="form-group">
+            <label for="nome">Seu nome completo</label>
+            <input type="text" id="nome" name="nome" placeholder="Ex.: Maria da Silva" required />
+          </div>
+
+          <div class="form-group">
+            <label for="telefone">Seu WhatsApp</label>
+            <input type="tel" id="telefone" name="telefone" placeholder="(34) 99999-9999" required />
+          </div>
+
+          <div class="form-group">
+            <label for="tratamento">Tratamento de interesse</label>
+            <select id="tratamento" name="tratamento" required>
+              <option value="">Selecione um tratamento...</option>
+              <option value="Implante Dentário">Implante Dentário</option>
+              <option value="Estética Dental (clareamento, facetas)">Estética Dental (clareamento, facetas)</option>
+              <option value="Clínica Geral / Consulta de rotina">Clínica Geral / Consulta de rotina</option>
+              <option value="Prótese Dentária">Prótese Dentária</option>
+              <option value="Cirurgia Oral">Cirurgia Oral</option>
+              <option value="Não sei ainda / Quero avaliar">Não sei ainda / Quero avaliar</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-whatsapp form-submit">
+            <i class="fab fa-whatsapp"></i> Enviar pelo WhatsApp
+          </button>
+        </form>
+
+        <p class="form-note">
+          <i class="fas fa-lock"></i> Seus dados são protegidos conforme a LGPD. Não enviamos spam.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== LOCALIZAÇÃO ===================== -->
+<section class="localizacao" id="localizacao">
+  <div class="container">
+    <div class="localizacao-header fade-up">
+      <span class="tag">Onde nos encontrar</span>
+      <h2 class="section-title">Localização e Contato</h2>
+      <p class="section-subtitle">Consultório centralizado em Uberaba para facilitar sua visita.</p>
+    </div>
+
+    <div class="localizacao-inner">
+      <!-- Mapa -->
+      <div class="map-embed fade-up">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3768.4!2d-47.9601!3d-19.7471!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sRua%20Duque%20de%20Caxias%2C%20305%2C%20S%C3%A3o%20Benedito%2C%20Uberaba%20MG!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Localização do consultório do Dr. Elias em Uberaba">
+        </iframe>
+      </div>
+
+      <!-- Informações -->
+      <div class="contato-info fade-up">
+        <div class="contato-item">
+          <div class="contato-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div>
+            <strong>Endereço</strong>
+            <span>Rua Duque de Caxias, 305<br/>São Benedito — Uberaba/MG</span>
+          </div>
+        </div>
+
+        <div class="contato-item">
+          <div class="contato-icon" style="background:#E8F8EF;color:var(--whatsapp);"><i class="fab fa-whatsapp"></i></div>
+          <div>
+            <strong>WhatsApp</strong>
+            <a href="https://wa.me/5534999999999?text=Olá%20Dr.%20Elias%2C%20gostaria%20de%20agendar%20uma%20consulta!" target="_blank" rel="noopener">
+              (34) 9 9999-9999
+            </a>
+            <br/>
+            <a href="https://wa.me/5534999999999?text=Olá%20Dr.%20Elias%2C%20gostaria%20de%20agendar%20uma%20consulta!" class="whatsapp-btn-contato" target="_blank" rel="noopener">
+              <i class="fab fa-whatsapp"></i> Falar agora
+            </a>
+          </div>
+        </div>
+
+        <div class="contato-item">
+          <div class="contato-icon"><i class="fas fa-clock"></i></div>
+          <div>
+            <strong>Horário de Atendimento</strong>
+            <div class="horarios-grid">
+              <div class="horario-row"><span class="dia">Seg — Sex</span><span>08h às 18h</span></div>
+              <div class="horario-row"><span class="dia">Sábado</span><span>08h às 12h</span></div>
+              <div class="horario-row"><span class="dia">Domingo</span><span>Fechado</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contato-item">
+          <div class="contato-icon"><i class="fas fa-share-alt"></i></div>
+          <div>
+            <strong>Redes Sociais</strong>
+            <div class="social-links">
+              <a href="https://instagram.com/" class="social-link instagram" target="_blank" rel="noopener" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="https://wa.me/5534999999999" class="social-link whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== RODAPÉ ===================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <!-- Marca -->
+      <div class="footer-brand">
+        <span class="name">Dr. Elias Gonçalves Sousa</span>
+        <span class="spec">Odontologia Avançada</span>
+        <p>Especialista em implante dentário, estética dental e clínica geral em Uberaba (MG). Atendimento humanizado, direto com o especialista.</p>
+        <p class="cnpj">Odontologia Avançada Dr. Elias Gonçalves Sousa LTDA<br/>CNPJ: 50.981.355/0001-87</p>
+      </div>
+
+      <!-- Links rápidos -->
+      <div class="footer-col">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="#sobre">Sobre o Dr. Elias</a></li>
+          <li><a href="#tratamentos">Tratamentos</a></li>
+          <li><a href="#diferenciais">Diferenciais</a></li>
+          <li><a href="#depoimentos">Depoimentos</a></li>
+          <li><a href="#cta-form">Agendar Avaliação</a></li>
+          <li><a href="#localizacao">Localização</a></li>
+        </ul>
+      </div>
+
+      <!-- Contato -->
+      <div class="footer-col">
+        <h4>Contato</h4>
+        <ul>
+          <li><a href="https://wa.me/5534999999999" target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="margin-right:.4rem;color:var(--whatsapp);"></i>(34) 9 9999-9999</a></li>
+          <li><a href="https://instagram.com/" target="_blank" rel="noopener"><i class="fab fa-instagram" style="margin-right:.4rem;"></i>@dr.eliassousa</a></li>
+          <li style="color:rgba(255,255,255,.55);font-size:.85rem;line-height:1.5;">Rua Duque de Caxias, 305<br/>São Benedito — Uberaba/MG</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Odontologia Avançada Dr. Elias Gonçalves Sousa. Todos os direitos reservados.</p>
+      <div class="lgpd">
+        <a href="#">Política de Privacidade</a>
+        <a href="#">LGPD</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ===================== BOTÃO WHATSAPP FLUTUANTE ===================== -->
+<a href="https://wa.me/5534999999999?text=Olá%20Dr.%20Elias%2C%20vim%20pelo%20site%20e%20gostaria%20de%20agendar%20minha%20avaliação%20gratuita!" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Falar pelo WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+  <span class="whatsapp-float-tooltip">Agendar pelo WhatsApp</span>
+</a>
+
+
+<!-- ===================== JAVASCRIPT ===================== -->
+<script>
+  // --- Navbar scroll ---
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 30);
+  });
+
+  // --- Hamburger / Mobile Menu ---
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobileNav');
+  hamburger.addEventListener('click', () => {
+    mobileNav.classList.toggle('open');
+  });
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => mobileNav.classList.remove('open'));
+  });
+
+  // --- Scroll animation ---
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  fadeEls.forEach(el => observer.observe(el));
+
+  // --- Formulário → WhatsApp ---
+  document.getElementById('agendamento-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const nome      = document.getElementById('nome').value.trim();
+    const telefone  = document.getElementById('telefone').value.trim();
+    const tratamento = document.getElementById('tratamento').value;
+
+    if (!nome || !telefone || !tratamento) {
+      alert('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    const msg = encodeURIComponent(
+      `Olá Dr. Elias! 👋\n\nVim pelo site e gostaria de agendar minha avaliação gratuita.\n\n📋 *Nome:* ${nome}\n📱 *Telefone:* ${telefone}\n🦷 *Interesse:* ${tratamento}\n\nAguardo retorno!`
+    );
+    window.open(`https://wa.me/5534999999999?text=${msg}`, '_blank');
+  });
+
+  // --- Phone mask ---
+  document.getElementById('telefone').addEventListener('input', function(e) {
+    let v = e.target.value.replace(/\D/g,'');
+    if (v.length <= 10) {
+      v = v.replace(/^(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+    } else {
+      v = v.replace(/^(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+    }
+    e.target.value = v;
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swarnim Dental Care - Design System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .ds-section { border-bottom: 1px solid #e2e8f0; padding: 100px 0; position: relative; }
+        .ds-label { color: #94a3b8; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 24px; display: block; }
+        .ds-nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.8); backdrop-filter: blur(12px); border-bottom: 1px solid #e2e8f0; }
+        .ds-swatch { height: 80px; width: 100%; border-radius: 20px; margin-bottom: 8px; border: 1px solid rgba(0,0,0,0.05); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="antialiased selection:bg-emerald-200 selection:text-emerald-900 bg-slate-50 text-slate-600">
+
+    <!-- Design System Navigation -->
+    <nav class="ds-nav py-4">
+        <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-emerald-500 p-1.5 rounded-lg text-white">
+                    <i data-lucide="smile" class="w-6 h-6"></i>
+                </div>
+                <span class="text-xl font-semibold tracking-tight text-slate-900">Swarnim <span class="text-xs font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full ml-2">Lab</span></span>
+            </div>
+            <div class="hidden md:flex gap-8">
+                <a href="#hero" class="text-sm font-medium hover:text-emerald-600 transition-colors">Hero</a>
+                <a href="#typography" class="text-sm font-medium hover:text-emerald-600 transition-colors">Typography</a>
+                <a href="#colors" class="text-sm font-medium hover:text-emerald-600 transition-colors">Colors</a>
+                <a href="#components" class="text-sm font-medium hover:text-emerald-600 transition-colors">Components</a>
+                <a href="#spacing" class="text-sm font-medium hover:text-emerald-600 transition-colors">Layout</a>
+                <a href="#motion" class="text-sm font-medium hover:text-emerald-600 transition-colors">Motion</a>
+                <a href="#icons" class="text-sm font-medium hover:text-emerald-600 transition-colors">Icons</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 0) Hero (Exact Clone) -->
+    <header id="hero" class="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden bg-white ds-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <div class="space-y-8">
+                    <div class="inline-flex items-center gap-2 bg-slate-100 px-3 py-1 rounded-full text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                        Living Assets v1.0
+                    </div>
+                    <h1 class="text-5xl lg:text-7xl font-semibold tracking-tighter leading-[1.1] text-slate-900">
+                        Design System <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r to-teal-500 from-emerald-600">Standardized</span> Protocol.
+                    </h1>
+                    <p class="text-lg md:text-xl text-slate-500 font-medium max-w-lg leading-relaxed">
+                        Extracting the premium emerald DNA from Swarnim Dental Care to ensure cross-platform visual excellence.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#typography" class="inline-flex justify-center items-center gap-2 bg-emerald-500 text-base font-medium px-8 py-3.5 rounded-full transition-all shadow-xl shadow-emerald-500/20 hover:shadow-emerald-500/40 hover:-translate-y-1 hover:bg-emerald-600 text-white">
+                            Style Protocol
+                            <i data-lucide="book-open" class="w-4 h-4"></i>
+                        </a>
+                        <a href="index.html" class="inline-flex justify-center items-center gap-2 border text-base font-medium px-8 py-3.5 rounded-full transition-all bg-white hover:bg-slate-50 text-slate-700 border-slate-200">
+                            Visit Website
+                        </a>
+                    </div>
+                </div>
+                <!-- Right Image Component -->
+                <div class="relative">
+                    <div class="relative rounded-[2.5rem] overflow-hidden shadow-2xl group shadow-emerald-900/10">
+                        <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=800" class="w-full h-[500px] object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t via-transparent to-transparent from-emerald-950/60"></div>
+                        <div class="absolute bottom-8 left-8 right-8 backdrop-blur-xl p-6 rounded-2xl shadow-xl flex items-center justify-between bg-white/95">
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-wider mb-1 text-emerald-600">DNA Token</p>
+                                <p class="font-medium text-slate-900">Premium High-Fidelity Design.</p>
+                            </div>
+                            <div class="p-3 rounded-full bg-emerald-100 text-emerald-600">
+                                <i data-lucide="shield-check" class="w-6 h-6"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 1) Typography -->
+    <section id="typography" class="ds-section">
+        <div class="max-w-7xl mx-auto px-6">
+            <span class="ds-label">1.0 Typography (Plus Jakarta Sans)</span>
+            <div class="space-y-16">
+                <!-- Heading 1 -->
+                <div class="flex flex-col md:flex-row md:items-baseline justify-between gap-4 py-10 border-b border-slate-100">
+                    <div class="space-y-4">
+                        <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Heading 1 / Hero</span>
+                        <h1 class="text-5xl lg:text-7xl font-semibold tracking-tighter text-slate-900 leading-[1.1]">The Emerald Standard.</h1>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">72px / 1.1 / -0.05em</span>
+                </div>
+                <!-- Heading 2 -->
+                <div class="flex flex-col md:flex-row md:items-baseline justify-between gap-4 py-10 border-b border-slate-100">
+                    <div class="space-y-4">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Heading 2 / Section</span>
+                        <h2 class="text-3xl md:text-5xl font-semibold tracking-tight text-slate-900">Frequently Asked Questions</h2>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">48px / 1.2</span>
+                </div>
+                <!-- Heading Gradient -->
+                <div class="flex flex-col md:flex-row md:items-baseline justify-between gap-4 py-10 border-b border-slate-100">
+                    <div class="space-y-4">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Heading Gradient</span>
+                        <h2 class="text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r to-teal-500 from-emerald-600">Confident Smile Starts Here.</h2>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">Emerald-600 to Teal-500</span>
+                </div>
+                <!-- Body Text -->
+                <div class="flex flex-col md:flex-row md:items-baseline justify-between gap-4 py-10 border-b border-slate-100">
+                    <div class="space-y-4">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Body Text / Paragraph</span>
+                        <p class="text-lg text-slate-500 font-medium max-w-xl leading-relaxed">Experience world-class dental care designed for your comfort. We combine advanced technology with a gentle touch to bring out your best smile.</p>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">18px / 1.625 / Medium (500)</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2) Colors & Surfaces -->
+    <section id="colors" class="ds-section bg-slate-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <span class="ds-label">2.0 Color Tokens</span>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 text-center">
+                <!-- Branding -->
+                <div>
+                    <div class="ds-swatch bg-emerald-500"></div>
+                    <span class="block text-xs font-bold text-slate-900 uppercase">Emerald 500</span>
+                    <span class="block text-[10px] text-slate-400">Primary Branding</span>
+                </div>
+                <div>
+                    <div class="ds-swatch bg-emerald-600"></div>
+                    <span class="block text-xs font-bold text-slate-900 uppercase">Emerald 600</span>
+                    <span class="block text-[10px] text-slate-400">Active Links</span>
+                </div>
+                <div>
+                    <div class="ds-swatch bg-emerald-950"></div>
+                    <span class="block text-xs font-bold text-slate-900 uppercase">Emerald 950</span>
+                    <span class="block text-[10px] text-slate-400">Dark Surfaces</span>
+                </div>
+                <!-- Slate -->
+                <div>
+                    <div class="ds-swatch bg-slate-900"></div>
+                    <span class="block text-xs font-bold text-slate-900 uppercase">Slate 900</span>
+                    <span class="block text-[10px] text-slate-400">Headings</span>
+                </div>
+                <div>
+                    <div class="ds-swatch bg-slate-600"></div>
+                    <span class="block text-xs font-bold text-slate-900 uppercase">Slate 600</span>
+                    <span class="block text-[10px] text-slate-400">Body Text</span>
+                </div>
+                <!-- Selection -->
+                <div>
+                    <div class="ds-swatch bg-emerald-200"></div>
+                    <span class="block text-xs font-bold text-slate-900 uppercase">Emerald 200</span>
+                    <span class="block text-[10px] text-slate-400">Text Selection</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3) UI Components -->
+    <section id="components" class="ds-section bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <span class="ds-label">3.0 Component System</span>
+            <div class="space-y-24">
+                <!-- Buttons -->
+                <div>
+                    <h4 class="text-[10px] font-bold text-slate-300 mb-8 uppercase tracking-[0.2em]">Navigation & CTAs</h4>
+                    <div class="flex flex-wrap gap-12 items-center">
+                        <div class="space-y-4">
+                            <span class="text-[10px] font-mono text-slate-300">Primary Action</span>
+                            <button class="bg-emerald-500 text-sm font-medium px-8 py-3.5 rounded-full shadow-xl shadow-emerald-500/20 text-white flex items-center gap-2 hover:bg-emerald-600 transition-all">
+                                Action Button <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="space-y-4">
+                            <span class="text-[10px] font-mono text-slate-300">Glass Nav Item</span>
+                            <div class="rounded-full shadow-lg px-6 py-2.5 bg-white/80 border border-slate-100 flex items-center gap-6">
+                                <a href="#" class="text-sm font-medium text-emerald-600">Active link</a>
+                                <a href="#" class="text-sm font-medium text-slate-500 hover:text-emerald-600 transition-colors">Inactive link</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Grid Item -->
+                <div>
+                    <h4 class="text-[10px] font-bold text-slate-300 mb-8 uppercase tracking-[0.2em]">Service Surfaces</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                        <div class="group p-2 rounded-3xl border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                            <div class="relative h-48 rounded-2xl overflow-hidden bg-slate-100">
+                                <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=600" class="w-full h-full object-cover">
+                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-slate-900">TOKEN 01</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-semibold mb-2">Service Component</h3>
+                                <p class="text-sm text-slate-500 leading-relaxed">Elevated white surface with subtle border and floating image container.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Mini Card -->
+                        <div class="bg-emerald-500 rounded-3xl p-8 shadow-xl shadow-emerald-500/10 text-white">
+                            <h3 class="text-3xl font-semibold mb-2">Stat Block</h3>
+                            <p class="text-sm text-emerald-100">Dark/Colored variant for statistics and highlights.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4) Layout & Spacing -->
+    <section id="spacing" class="ds-section bg-slate-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <span class="ds-label">4.0 Layout & Geometry</span>
+            <div class="space-y-12">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+                    <div class="bg-white border h-32 rounded-3xl flex items-center justify-center text-[10px] font-bold text-slate-300 uppercase tracking-widest">Col 1</div>
+                    <div class="bg-white border h-32 rounded-3xl flex items-center justify-center text-[10px] font-bold text-slate-300 uppercase tracking-widest">Col 2</div>
+                    <div class="bg-emerald-500/10 border border-emerald-500/20 h-40 -mt-4 rounded-3xl flex items-center justify-center text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Highlight Col</div>
+                    <div class="bg-white border h-32 rounded-3xl flex items-center justify-center text-[10px] font-bold text-slate-300 uppercase tracking-widest">Col 4</div>
+                    <div class="bg-white border h-32 rounded-3xl flex items-center justify-center text-[10px] font-bold text-slate-300 uppercase tracking-widest">Col 5</div>
+                </div>
+                <p class="text-xs text-slate-400 font-medium italic">5-Column Grid with highlighted offset used in the Team section.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5) Motion & Interaction -->
+    <section id="motion" class="ds-section bg-[#022c22]">
+        <div class="max-w-7xl mx-auto px-6">
+            <span class="ds-label !text-emerald-800">5.0 Interactive DNA</span>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-16 text-center">
+                <div class="space-y-6">
+                    <span class="text-[10px] font-mono text-emerald-800 uppercase tracking-widest">Button Lift</span>
+                    <div class="flex justify-center">
+                        <button class="bg-emerald-500 px-8 py-3 rounded-full text-white font-bold hover:-translate-y-2 transition-transform shadow-xl shadow-emerald-500/30">Translate Y</button>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <span class="text-[10px] font-mono text-emerald-800 uppercase tracking-widest">Image Zoom</span>
+                    <div class="relative overflow-hidden rounded-3xl border border-emerald-800/50 group w-48 mx-auto aspect-square">
+                        <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=400" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-125">
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <span class="text-[10px] font-mono text-emerald-800 uppercase tracking-widest">Text Gradient Shine</span>
+                    <h2 class="text-3xl font-bold text-white relative group">
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r to-teal-400 from-emerald-400 hover:brightness-125 transition-all cursor-default">Interactive Gloss</span>
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6) Icons -->
+    <section id="icons" class="ds-section">
+        <div class="max-w-7xl mx-auto px-6">
+            <span class="ds-label">6.0 Iconography (Lucide System)</span>
+            <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-12 text-slate-900">
+                <div class="flex flex-col items-center gap-3">
+                    <i data-lucide="smile" class="w-8 h-8 text-emerald-500"></i>
+                    <span class="text-[10px] font-mono text-slate-400">smile</span>
+                </div>
+                <div class="flex flex-col items-center gap-3">
+                    <i data-lucide="sparkles" class="w-8 h-8 text-emerald-500"></i>
+                    <span class="text-[10px] font-mono text-slate-400">sparkles</span>
+                </div>
+                <div class="flex flex-col items-center gap-3">
+                    <i data-lucide="plus" class="w-8 h-8"></i>
+                    <span class="text-[10px] font-mono text-slate-400">plus</span>
+                </div>
+                <div class="flex flex-col items-center gap-3">
+                    <i data-lucide="activity" class="w-8 h-8"></i>
+                    <span class="text-[10px] font-mono text-slate-400">activity</span>
+                </div>
+                <div class="flex flex-col items-center gap-3">
+                    <i data-lucide="baby" class="w-8 h-8"></i>
+                    <span class="text-[10px] font-mono text-slate-400">baby</span>
+                </div>
+                <div class="flex flex-col items-center gap-3">
+                    <i data-lucide="moon" class="w-8 h-8"></i>
+                    <span class="text-[10px] font-mono text-slate-400">moon</span>
+                </div>
+                <div class="flex flex-col items-center gap-3">
+                    <i data-lucide="star" class="w-8 h-8 text-yellow-500 fill-yellow-500"></i>
+                    <span class="text-[10px] font-mono text-slate-400">star</span>
+                </div>
+                <div class="flex flex-col items-center gap-3">
+                    <i data-lucide="calendar" class="w-8 h-8"></i>
+                    <span class="text-[10px] font-mono text-slate-400">calendar</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-20 text-center border-t border-slate-100 italic">
+        <p class="text-[10px] font-bold text-slate-300 uppercase tracking-[1em]">© 2026 Swarnim Dental Design Standard</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tooth Fairy - Clinical Excellence DS v5.0 (Ultimate Edition)</title>
+    
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"Geist Mono"', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9', // Azure Primary
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        neutral: {
+                            25: '#fcfdfe',
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'shimmer': 'shimmer 2.5s linear infinite',
+                        'beam': 'beam 7s linear infinite',
+                        'reveal-up': 'reveal-up 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'glow-pulse': 'glow-pulse 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-15px) rotate(1deg)' },
+                        },
+                        shimmer: {
+                            'from': { transform: 'translateX(-100%) skewX(-15deg)' },
+                            'to': { transform: 'translateX(200%) skewX(-15deg)' },
+                        },
+                        beam: {
+                            '0%': { transform: 'translateX(-200px)', opacity: '0' },
+                            '15%': { opacity: '0.4' },
+                            '85%': { opacity: '0.4' },
+                            '100%': { transform: 'translateX(100vw)', opacity: '0' },
+                        },
+                        'reveal-up': {
+                            '0%': { clipPath: 'inset(100% 0 0 0)', transform: 'translateY(60px)', opacity: '0' },
+                            '100%': { clipPath: 'inset(0 0 0 0)', transform: 'translateY(0)', opacity: '1' },
+                        },
+                        'glow-pulse': {
+                            '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },
+                            '50%': { opacity: '0.6', transform: 'scale(1.1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --azure-glow: rgba(14, 165, 233, 0.15);
+            --beam-color: rgba(14, 165, 233, 0.3);
+            --grid-color: rgba(226, 232, 240, 0.4);
+            --mouse-x: 50%;
+            --mouse-y: 50%;
+        }
+
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #f8fafc; }
+        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0ea5e9; }
+
+        /* Ultramodern Grid */
+        .bg-grid-ultimate {
+            background-size: 80px 80px;
+            background-image: radial-gradient(circle, var(--grid-color) 1px, transparent 1px);
+        }
+
+        /* Cinematic Master Beams */
+        .beam-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+        .beam { position: absolute; height: 1px; width: 400px; background: linear-gradient(90deg, transparent, var(--beam-color), transparent); }
+
+        /* Ultimate Flashlight Reveal */
+        .flashlight-card { position: relative; overflow: hidden; background: white; border: 1px solid #f1f5f9; }
+        .flashlight-card::before {
+            content: "";
+            position: absolute;
+            inset: 0px;
+            background: radial-gradient(
+                800px circle at var(--mouse-x) var(--mouse-y),
+                rgba(14, 165, 233, 0.07),
+                transparent 40%
+            );
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .flashlight-card:hover::before { opacity: 1; }
+
+        /* Interaction Primitives */
+        .lab-section { border-bottom: 1px solid #f1f5f9; padding: 140px 0; position: relative; }
+        .ds-label { font-family: 'Geist Mono', monospace; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4em; color: #94a3b8; margin-bottom: 3rem; display: block; }
+        
+        .glass-ultimate { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.02); }
+        .reveal-item { opacity: 0; }
+
+        /* Shimmer Button Protocol */
+        .btn-shimmer {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-shimmer::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 4s infinite;
+        }
+
+        /* Hero Image Container */
+        .hero-frame { 
+            perspective: 2000px; 
+            transform-style: preserve-3d;
+        }
+    </style>
+</head>
+<body class="bg-neutral-25 text-neutral-900 antialiased selection:bg-brand-100 selection:text-brand-900 overflow-x-hidden">
+
+    <!-- Design System Global Nav -->
+    <nav class="fixed top-0 left-0 right-0 z-[100] glass-ultimate h-24 flex items-center justify-between px-12 transition-all duration-500">
+        <div class="flex items-center gap-4 group cursor-pointer">
+            <div class="w-12 h-12 bg-white text-brand-500 rounded-2xl flex items-center justify-center shadow-xl shadow-brand-100 border border-brand-50 transition-all group-hover:bg-brand-500 group-hover:text-white group-hover:rotate-[360deg] duration-700">
+                <iconify-icon icon="solar:stars-minimalistic-bold-duotone" width="28"></iconify-icon>
+            </div>
+            <div class="flex flex-col">
+                <span class="font-black text-neutral-900 tracking-tighter text-2xl">Tooth Fairy</span>
+                <span class="text-[10px] font-bold text-brand-500 uppercase tracking-[0.5em] -mt-1">Ultimate Lab v5.0</span>
+            </div>
+        </div>
+        <div class="hidden xl:flex gap-14 text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-400">
+            <a href="#hero" class="hover:text-brand-500 transition-colors">Capability Demo</a>
+            <a href="#typography" class="hover:text-brand-500 transition-colors">Typo System</a>
+            <a href="#colors" class="hover:text-brand-500 transition-colors">Color Matrix</a>
+            <a href="#components" class="hover:text-brand-500 transition-colors">UI Kit Master</a>
+            <a href="#motion" class="hover:text-brand-500 transition-colors">Motion DNA</a>
+        </div>
+        <div class="flex items-center gap-6">
+            <button class="px-10 py-3.5 bg-neutral-900 text-white font-black text-[10px] uppercase rounded-2xl hover:bg-brand-500 transition-all shadow-xl shadow-neutral-200">
+                Prototypes
+            </button>
+        </div>
+    </nav>
+
+    <!-- 0) ULTIMATE CAPABILITY HERO -->
+    <section id="hero" class="min-h-screen relative flex items-center justify-center overflow-hidden bg-white pt-24">
+        <!-- Background Grid & Beams -->
+        <div class="absolute inset-0 bg-grid-ultimate pointer-events-none opacity-40"></div>
+        <div class="beam-layer">
+            <div class="beam animate-beam" style="top: 20%; animation-duration: 8s;"></div>
+            <div class="beam animate-beam" style="top: 80%; animation-delay: 3s; animation-duration: 10s;"></div>
+            <div class="beam animate-beam" style="top: 50%; animation-delay: 5s; animation-duration: 12s; opacity: 0.2"></div>
+        </div>
+
+        <!-- Ambient Glow -->
+        <div class="absolute -top-40 -right-40 w-[600px] h-[600px] bg-brand-200 rounded-full blur-[200px] animate-glow-pulse"></div>
+        <div class="absolute -bottom-40 -left-40 w-[600px] h-[600px] bg-brand-100 rounded-full blur-[200px] animate-glow-pulse" style="animation-delay: -2s"></div>
+
+        <div class="max-w-7xl mx-auto px-12 w-full grid lg:grid-cols-2 gap-24 relative z-10">
+            <div class="flex flex-col justify-center space-y-12">
+                <div class="inline-flex items-center gap-4 bg-brand-50 border border-brand-100 text-brand-600 px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.5em] animate-reveal-up">
+                    <span class="flex gap-1.5 align-center">
+                        <span class="w-2 h-2 rounded-full bg-brand-500 animate-ping"></span>
+                    </span>
+                    Clinical Excellence Protocol
+                </div>
+                
+                <h1 class="text-8xl md:text-[10rem] font-black text-neutral-900 tracking-tighter leading-[0.8] mb-4">
+                    <span class="block animate-reveal-up" style="animation-delay: 0.1s">Bright</span>
+                    <span class="block text-brand-500 animate-reveal-up" style="animation-delay: 0.2s">Futures.</span>
+                    <span class="block text-neutral-200 animate-reveal-up" style="animation-delay: 0.3s">Perfected.</span>
+                </h1>
+
+                <p class="text-2xl text-neutral-500 font-medium max-w-xl leading-relaxed animate-reveal-up" style="animation-delay: 0.4s">
+                    A síntese definitiva de tecnologia médica e luxo visual. Nossa <span class="text-brand-500 font-bold">V5 Ultimate</span> redefine o padrão de excelência para clínicas de alto padrão.
+                </p>
+
+                <div class="flex flex-wrap gap-8 animate-reveal-up" style="animation-delay: 0.5s">
+                    <button class="btn-shimmer px-14 py-6 bg-brand-500 text-white font-black rounded-[2rem] transform hover:scale-105 active:scale-95 shadow-[0_30px_60px_-15px_rgba(14,165,233,0.35)] group">
+                        <span class="flex items-center gap-4 text-base">
+                            <iconify-icon icon="solar:heart-angle-bold-duotone" width="24"></iconify-icon>
+                            Iniciar Jornada
+                        </span>
+                    </button>
+                    
+                    <button class="px-14 py-6 bg-white text-neutral-700 border-2 border-neutral-100 font-black rounded-[2rem] hover:border-brand-500 transition-all flex items-center gap-4 text-base shadow-xl shadow-neutral-100/50">
+                        Design Assets
+                        <iconify-icon icon="solar:download-minimalistic-bold-duotone" width="22"></iconify-icon>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ultimate Hero Showcase Frame -->
+            <div class="relative group animate-reveal-up hero-frame" style="animation-delay: 0.6s">
+                <div id="hero-tilt" class="relative aspect-[4/5] rounded-[4rem] overflow-hidden border-[20px] border-white shadow-[0_80px_160px_rgba(0,0,0,0.12)] transition-transform duration-700 ease-out">
+                    <img src="hero_ultimate.png" alt="Luxury Healthcare Environment" class="object-cover w-full h-full scale-110 group-hover:scale-105 transition-transform duration-[3s]">
+                    
+                    <!-- Floating Data Node -->
+                    <div class="absolute bottom-12 left-12 right-12 glass-ultimate p-10 rounded-[3rem] animate-float">
+                        <div class="flex items-center gap-6 mb-8">
+                             <div class="w-16 h-16 bg-brand-500 text-white rounded-[1.5rem] flex items-center justify-center shadow-lg shadow-brand-200">
+                                <iconify-icon icon="solar:health-bold-duotone" width="32"></iconify-icon>
+                             </div>
+                             <div>
+                                <h4 class="text-neutral-900 font-black text-2xl tracking-tight">Clinica Dr. Elias</h4>
+                                <span class="text-[10px] font-bold text-brand-500 uppercase tracking-widest">Excelência em Odontologia</span>
+                             </div>
+                        </div>
+                        <div class="flex items-center justify-between pb-6 border-b border-neutral-100">
+                            <span class="text-neutal-400 text-[10px] font-bold uppercase tracking-widest">Satisfação</span>
+                            <span class="text-neutral-900 font-black">99.8%</span>
+                        </div>
+                        <div class="flex items-center justify-between pt-6">
+                            <span class="text-neutal-400 text-[10px] font-bold uppercase tracking-widest">Tecnologia</span>
+                            <span class="text-brand-500 font-black">ULTRA 3D</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1) TYPOGRAPHY SECTION -->
+    <section id="typography" class="lab-section bg-neutral-50/50">
+        <div class="max-w-7xl mx-auto px-12">
+            <span class="ds-label">01 / Unified Typography Protocol</span>
+            
+            <div class="space-y-32">
+                <div class="grid lg:grid-cols-2 gap-24 items-end pb-20 border-b border-neutral-200 reveal-item">
+                    <div class="space-y-6">
+                        <h1 class="text-9xl md:text-[12rem] font-black text-neutral-900 tracking-tighter leading-[0.75]">Master.</h1>
+                        <p class="text-[11px] font-mono text-neutral-400 uppercase tracking-widest">H1 / Plus Jakarta Sans / 192px / -0.06em</p>
+                    </div>
+                    <div class="space-y-6">
+                        <h2 class="text-7xl font-bold text-brand-500 tracking-tighter leading-none">Sub-Focus.</h2>
+                        <p class="text-[11px] font-mono text-neutral-400 uppercase tracking-widest">H2 / Brand Accent / 72px</p>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-24 items-start">
+                    <div class="reveal-item">
+                        <h3 class="text-4xl font-bold text-neutral-800 tracking-tight mb-6">Component Header.</h3>
+                        <p class="text-base text-neutral-500 leading-relaxed font-medium">Equilíbrio perfeito entre clareza técnica e convite emocional. Nossas fontes são selecionadas para humanizar a tecnologia.</p>
+                    </div>
+                    <div class="reveal-item">
+                        <span class="ds-label !text-brand-500 !mb-8">Body Large Spec</span>
+                        <p class="text-2xl text-neutral-600 font-light leading-relaxed">
+                            Every word is weighted for impact. Our interface breathes with generous leading and precise tracking.
+                        </p>
+                    </div>
+                    <div class="reveal-item">
+                        <span class="ds-label !mb-8">Technical Detail</span>
+                        <p class="text-sm font-mono text-neutral-500 leading-relaxed font-bold">
+                            TYPE_FACE: "Geist Mono"<br>
+                            WEIGHT: 700<br>
+                            LETTER_SPACING: 0.1em
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2) COLOR SYSTEM -->
+    <section id="colors" class="lab-section bg-white">
+        <div class="max-w-7xl mx-auto px-12">
+            <span class="ds-label">02 / Color Matrix Master</span>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <!-- Brand Primary -->
+                <div class="space-y-10 reveal-item">
+                    <h4 class="text-xs font-black text-neutral-900 uppercase tracking-widest">Ultimate Primary</h4>
+                    <div class="h-80 w-full rounded-[3.5rem] bg-brand-500 shadow-2xl shadow-brand-100 p-12 flex flex-col justify-end border border-brand-400/20 relative overflow-hidden group">
+                        <div class="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                        <span class="relative z-10 text-white font-black text-3xl mb-1">Azure 500</span>
+                        <span class="relative z-10 text-white/60 font-mono text-[11px] uppercase tracking-widest">#0EA5E9</span>
+                    </div>
+                    <div class="grid grid-cols-5 gap-3">
+                        <div class="h-12 rounded-2xl bg-brand-50"></div>
+                        <div class="h-12 rounded-2xl bg-brand-100"></div>
+                        <div class="h-12 rounded-2xl bg-brand-300"></div>
+                        <div class="h-12 rounded-2xl bg-brand-700"></div>
+                        <div class="h-12 rounded-2xl bg-brand-900"></div>
+                    </div>
+                </div>
+
+                <!-- Pure Neutrals -->
+                <div class="space-y-10 reveal-item">
+                    <h4 class="text-xs font-black text-neutral-900 uppercase tracking-widest">Clinical Neutrals</h4>
+                    <div class="h-80 w-full rounded-[3.5rem] bg-white shadow-2xl shadow-neutral-100 p-12 flex flex-col justify-end border border-neutral-100 relative group">
+                        <div class="absolute top-10 right-10 w-24 h-24 bg-brand-50 rounded-full animate-ping opacity-20"></div>
+                        <span class="relative z-10 text-neutral-900 font-black text-3xl mb-1">Polar White</span>
+                        <span class="relative z-10 text-neutral-400 font-mono text-[11px] uppercase tracking-widest">#FCFDFE</span>
+                    </div>
+                    <div class="grid grid-cols-5 gap-3">
+                        <div class="h-12 rounded-2xl bg-neutral-25 border border-neutral-50 shadow-sm"></div>
+                        <div class="h-12 rounded-2xl bg-neutral-100"></div>
+                        <div class="h-12 rounded-2xl bg-neutral-400"></div>
+                        <div class="h-12 rounded-2xl bg-neutral-700"></div>
+                        <div class="h-12 rounded-2xl bg-neutral-900"></div>
+                    </div>
+                </div>
+
+                <!-- Gradient Specs -->
+                <div class="space-y-10 reveal-item col-span-1 lg:col-span-2">
+                    <h4 class="text-xs font-black text-neutral-900 uppercase tracking-widest">Synthesized Gradients</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                        <div class="p-12 bg-gradient-to-br from-brand-400 to-brand-600 rounded-[3.5rem] text-white shadow-xl shadow-brand-100 relative overflow-hidden group">
+                           <iconify-icon icon="solar:mirror-bold-duotone" width="48" class="mb-8 opacity-20 group-hover:rotate-12 transition-transform"></iconify-icon>
+                           <h5 class="font-black text-2xl mb-2">Liquid Azure</h5>
+                           <p class="text-xs text-white/70 font-bold uppercase tracking-widest">Role: Highlights / Interactive</p>
+                        </div>
+                        <div class="p-12 bg-neutral-900 rounded-[3.5rem] text-white relative overflow-hidden group">
+                           <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-brand-500/20 rounded-full blur-[60px] group-hover:scale-150 transition-transform duration-1000"></div>
+                           <iconify-icon icon="solar:moon-bold-duotone" width="48" class="mb-8 text-brand-500"></iconify-icon>
+                           <h5 class="font-black text-2xl mb-2">Deep Void</h5>
+                           <p class="text-xs text-neutral-500 font-bold uppercase tracking-widest">Role: Dark Mode / Precision</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3) COMPONENT LABORATORY -->
+    <section id="components" class="lab-section bg-[#fcfdfe]">
+        <!-- Background Master Beams -->
+        <div class="beam-layer opacity-40">
+            <div class="beam animate-beam" style="top: 15%; right: -200px; animation-duration: 9s; background: linear-gradient(-90deg, transparent, var(--beam-color), transparent);"></div>
+            <div class="beam animate-beam" style="top: 85%; left: -200px; animation-delay: 5s; animation-duration: 11s;"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-12 relative z-10">
+            <span class="ds-label">03 / Master UI Component Library</span>
+            
+            <div class="space-y-40">
+                <!-- Action Primitives -->
+                <div class="reveal-item">
+                    <h4 class="text-[10px] font-black text-neutral-300 uppercase tracking-[0.5em] mb-12">Core Action Primitives</h4>
+                    <div class="flex flex-wrap gap-12 items-center">
+                        <button class="btn-shimmer px-12 py-5 bg-brand-500 text-white font-black rounded-3xl flex items-center gap-4 shadow-2xl shadow-brand-200 hover:-translate-y-1.5 active:scale-95 transition-all group">
+                            Agendar Protocolo
+                            <iconify-icon icon="solar:check-read-bold-duotone" width="20" class="group-hover:scale-125 transition-transform"></iconify-icon>
+                        </button>
+                        <button class="px-12 py-5 bg-neutral-900 text-white font-black rounded-3xl flex items-center gap-4 hover:bg-brand-600 transition-all shadow-xl shadow-neutral-200 group">
+                            Dashboard Clínico
+                            <iconify-icon icon="solar:widget-bold-duotone" width="20" class="group-hover:rotate-45 transition-transform"></iconify-icon>
+                        </button>
+                        <button class="px-12 py-5 bg-white border-2 border-neutral-100 text-neutral-700 font-black rounded-3xl hover:border-brand-500 hover:text-brand-500 transition-all shadow-lg shadow-neutral-100/50">
+                            Download PDF Spec
+                        </button>
+                        <button class="w-16 h-16 bg-neutral-900 text-brand-500 rounded-2xl flex items-center justify-center hover:bg-brand-500 hover:text-white transition-all shadow-lg">
+                            <iconify-icon icon="solar:settings-bold-duotone" width="28"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Surfaces & Cards -->
+                <div class="reveal-item">
+                    <h4 class="text-[10px] font-black text-neutral-300 uppercase tracking-[0.5em] mb-12">Cinematic Surfaces (Flashlight Reveal)</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                        <!-- Ultimate Flashlight Card -->
+                        <div class="flashlight-card p-14 rounded-[4rem] group cursor-pointer border border-neutral-100 hover:shadow-[0_60px_100px_-20px_rgba(0,0,0,0.06)] hover:-translate-y-4 transition-all duration-700">
+                            <div class="w-20 h-20 bg-brand-50 text-brand-500 rounded-[2rem] flex items-center justify-center mb-12 group-hover:scale-110 transition-transform duration-500 shadow-inner">
+                                <iconify-icon icon="solar:ranking-bold-duotone" width="40"></iconify-icon>
+                            </div>
+                            <h3 class="text-3xl font-black text-neutral-900 mb-6 tracking-tight">Estética Dental</h3>
+                            <p class="text-neutral-500 leading-relaxed font-medium text-lg">Harmonização complexa e reabilitação oral com tecnologia digital de mapeamento.</p>
+                            <div class="mt-12 flex items-center gap-3 text-brand-600 font-black text-[11px] uppercase tracking-[0.3em] opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
+                                Ver Portfólio <iconify-icon icon="solar:alt-arrow-right-linear" width="18"></iconify-icon>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Clinical Card -->
+                        <div class="bg-neutral-950 p-14 rounded-[4rem] relative overflow-hidden group hover:-translate-y-4 transition-all duration-700 shadow-2xl">
+                             <div class="absolute -right-20 -top-20 w-80 h-80 bg-brand-500/10 rounded-full blur-[100px] group-hover:scale-150 transition-transform duration-1000"></div>
+                             <div class="relative z-10 flex flex-col h-full">
+                                <h3 class="text-white text-3xl font-black mb-6 tracking-tight leading-tight">Clareamento<br><span class="text-brand-500">Ultimate Plus</span></h3>
+                                <p class="text-neutral-400 leading-relaxed font-medium mb-12">O mais alto padrão em estética branca com tecnologia laser exclusiva.</p>
+                                <div class="mt-auto">
+                                    <button class="w-full py-4 glass-ultimate !bg-white/5 border-white/10 text-white font-black text-xs uppercase tracking-widest rounded-3xl hover:!bg-brand-500 transition-all">Saber Mais</button>
+                                </div>
+                             </div>
+                        </div>
+
+                        <!-- Stat/Highlight Surface -->
+                        <div class="bg-brand-500 p-14 rounded-[4rem] text-white relative overflow-hidden group hover:-translate-y-4 transition-all duration-700 shadow-[0_40px_80px_-20px_rgba(14,165,233,0.3)]">
+                            <div class="h-1 w-24 bg-white/30 rounded-full mb-12 group-hover:w-full transition-all duration-1000"></div>
+                            <h3 class="text-xl font-bold mb-4 opacity-70">Impacto Clínico</h3>
+                            <div class="flex items-baseline gap-2 mb-10">
+                                <span class="text-7xl font-black tracking-tighter">15k</span>
+                                <span class="text-xl font-bold opacity-60">+ Sorrisos</span>
+                            </div>
+                            <iconify-icon icon="solar:star-shine-bold-duotone" class="absolute -bottom-10 -right-10 opacity-10" width="240"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Forms & Input Precision -->
+                <div class="reveal-item">
+                    <h4 class="text-[10px] font-black text-neutral-300 uppercase tracking-[0.5em] mb-12">Input Precision System</h4>
+                    <div class="max-w-3xl glass-ultimate p-16 rounded-[4.5rem] border border-neutral-100 shadow-2xl">
+                        <div class="grid md:grid-cols-2 gap-12">
+                            <div class="space-y-4">
+                                <label class="text-[11px] font-bold text-neutral-400 uppercase tracking-widest ml-2">Protocolo do Paciente</label>
+                                <div class="relative group">
+                                    <input type="text" placeholder="Nome Completo" class="w-full h-20 px-10 bg-white border-2 border-neutral-100 rounded-[2rem] outline-none focus:border-brand-500 focus:ring-[12px] focus:ring-brand-500/5 transition-all font-bold text-neutral-900 placeholder:text-neutral-300">
+                                    <iconify-icon icon="solar:user-circle-bold-duotone" class="absolute right-8 top-1/2 -translate-y-1/2 text-neutral-200 group-focus-within:text-brand-500 transition-colors" width="28"></iconify-icon>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <label class="text-[11px] font-bold text-neutral-400 uppercase tracking-widest ml-2">Especialidade Desejada</label>
+                                <div class="relative group">
+                                    <select class="w-full h-20 px-10 bg-white border-2 border-neutral-100 rounded-[2rem] outline-none focus:border-brand-500 focus:ring-[12px] focus:ring-brand-500/5 transition-all font-bold text-neutral-900 appearance-none">
+                                        <option>Estética & Harmonização</option>
+                                        <option>Implantodontia 3D</option>
+                                        <option>Odontopediatria</option>
+                                    </select>
+                                    <iconify-icon icon="solar:alt-arrow-down-linear" class="absolute right-8 top-1/2 -translate-y-1/2 text-neutral-200" width="24"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="w-full mt-12 py-6 bg-neutral-950 text-white font-black rounded-[2.5rem] hover:bg-brand-500 transition-all shadow-2xl shadow-neutral-300 group">
+                           Confirmar Protocolo de Agendamento
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4) MOTION HUB MASTER -->
+    <section id="motion" class="lab-section bg-neutral-950 text-white overflow-hidden">
+        <!-- Background Reveal Sweep -->
+        <div class="absolute inset-0 bg-gradient-to-br from-brand-900/10 via-neutral-950 to-neutral-950 opacity-100"></div>
+        
+        <div class="max-w-7xl mx-auto px-12 relative z-10">
+            <span class="ds-label !text-neutral-700">04 / Kinetic Motion Specs & Icon Hub</span>
+            
+            <div class="grid lg:grid-cols-2 gap-32">
+                <div class="space-y-20">
+                    <h2 class="text-8xl font-black tracking-tighter leading-none">Motion <span class="text-brand-500">DNA.</span></h2>
+                    
+                    <div class="grid grid-cols-4 md:grid-cols-6 gap-10">
+                        <div class="w-24 h-24 bg-white/5 border border-white/10 rounded-[2rem] flex items-center justify-center hover:bg-brand-500 hover:text-white transition-all cursor-crosshair group">
+                             <iconify-icon icon="solar:atom-bold-duotone" width="40" class="group-hover:rotate-180 transition-transform duration-1000"></iconify-icon>
+                        </div>
+                        <div class="w-24 h-24 bg-white/5 border border-white/10 rounded-[2rem] flex items-center justify-center hover:bg-brand-500 hover:text-white transition-all cursor-crosshair group">
+                             <iconify-icon icon="solar:clapperboard-edit-bold-duotone" width="40"></iconify-icon>
+                        </div>
+                        <div class="w-24 h-24 bg-white/5 border border-white/10 rounded-[2rem] flex items-center justify-center hover:bg-brand-500 hover:text-white transition-all cursor-crosshair group">
+                             <iconify-icon icon="solar:mask-happly-bold-duotone" width="40"></iconify-icon>
+                        </div>
+                        <div class="w-24 h-24 bg-white/5 border border-white/10 rounded-[2rem] flex items-center justify-center hover:bg-brand-500 hover:text-white transition-all cursor-crosshair group">
+                             <iconify-icon icon="solar:magic-stick-bold-duotone" width="40"></iconify-icon>
+                        </div>
+                        <div class="w-24 h-24 bg-brand-500 rounded-[2rem] flex items-center justify-center shadow-[0_0_60px_rgba(14,165,233,0.5)]">
+                             <iconify-icon icon="solar:bolt-bold-duotone" width="40" class="text-white"></iconify-icon>
+                        </div>
+                    </div>
+
+                    <div class="space-y-8">
+                        <h4 class="text-[11px] font-bold text-neutral-600 uppercase tracking-[0.4em]">Master Transition Protocol</h4>
+                        <div class="flex items-center justify-between p-10 bg-white/5 border border-white/5 rounded-[3rem]">
+                             <span class="text-sm font-mono text-neutral-500">Clinical Reveal Curve</span>
+                             <span class="text-brand-500 font-black uppercase text-[10px] tracking-widest px-6 py-2 bg-brand-500/10 rounded-full border border-brand-500/20">Cubic-Bezier (0.16, 1, 0.3, 1)</span>
+                        </div>
+                        <div class="flex items-center justify-between p-10 bg-white/5 border border-white/5 rounded-[3rem]">
+                             <span class="text-sm font-mono text-neutral-500">Magnetic Tilt Smoothing</span>
+                             <span class="text-neutral-300 font-bold uppercase text-[10px] tracking-widest">GSAP Power4.Out (0.6s)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Visualizer -->
+                <div class="flex items-center justify-center">
+                    <div class="relative">
+                        <!-- Orbiting Ring Simulation -->
+                        <div class="w-[32rem] h-[32rem] border-2 border-white/5 rounded-full flex items-center justify-center relative animate-spin" style="animation-duration: 40s;">
+                            <div class="absolute -top-4 left-1/2 -track-x-1/2 w-10 h-10 bg-brand-500 rounded-2xl shadow-[0_0_60px_rgba(14,165,233,1)]"></div>
+                            <div class="absolute bottom-10 right-10 w-4 h-4 bg-white rounded-full blur-sm"></div>
+                        </div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-[20rem] h-[20rem] border border-white/10 rounded-full flex items-center justify-center">
+                                <div class="w-64 h-64 bg-white text-neutral-950 rounded-full flex items-center justify-center shadow-[0_0_100px_rgba(255,255,255,0.2)] animate-float">
+                                    <iconify-icon icon="solar:health-bold-duotone" width="100" class="text-brand-500 animate-pulse"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ULTIMATE FOOTER -->
+    <footer class="py-32 text-center border-t border-neutral-100">
+        <div class="flex flex-col items-center gap-14">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-neutral-900 text-brand-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <iconify-icon icon="solar:health-bold-duotone" width="28"></iconify-icon>
+                </div>
+                <span class="font-black text-neutral-900 tracking-tighter text-3xl">Tooth Fairy Ultimate</span>
+            </div>
+            <p class="text-[11px] font-bold text-neutral-300 uppercase tracking-[0.8em]">© 2026 Master Protocol Synthesized for Dr. Elias Sousa</p>
+            <div class="flex flex-wrap justify-center gap-16">
+                <a href="#" class="text-[11px] font-bold text-neutral-400 hover:text-brand-500 transition-colors uppercase tracking-[0.2em]">Storybook Master</a>
+                <a href="#" class="text-[11px] font-bold text-neutral-400 hover:text-brand-500 transition-colors uppercase tracking-[0.2em]">Asset Cloud Hub</a>
+                <a href="#" class="text-[11px] font-bold text-neutral-400 hover:text-brand-500 transition-colors uppercase tracking-[0.2em]">Brand Bible</a>
+                <a href="#" class="text-[11px] font-bold text-neutral-400 hover:text-brand-500 transition-colors uppercase tracking-[0.2em]">Dev Specs</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // GSAP Initialization
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Global Mouse Interaction for Flashlight Orientation
+        window.addEventListener('mousemove', e => {
+            const x = (e.clientX / window.innerWidth) * 100;
+            const y = (e.clientY / window.innerHeight) * 100;
+            document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+            document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+        });
+
+        document.querySelectorAll('.flashlight-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // 3D Tilt Logic for Hero
+        const heroTilt = document.getElementById('hero-tilt');
+        if(heroTilt) {
+            window.addEventListener('mousemove', (e) => {
+                const rect = heroTilt.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 40;
+                const rotateY = (centerX - x) / 40;
+                
+                gsap.to(heroTilt, {
+                    rotateX: rotateX,
+                    rotateY: rotateY,
+                    duration: 0.8,
+                    ease: "power3.out"
+                });
+            });
+
+            heroTilt.addEventListener('mouseleave', () => {
+                gsap.to(heroTilt, {
+                    rotateX: 0,
+                    rotateY: 0,
+                    duration: 1.5,
+                    ease: "elastic.out(1, 0.3)"
+                });
+            });
+        }
+
+        // Global Scroll Reveal System
+        document.querySelectorAll('.reveal-item').forEach((item, index) => {
+            gsap.to(item, {
+                scrollTrigger: {
+                    trigger: item,
+                    start: "top 85%",
+                    toggleActions: "play none none none"
+                },
+                opacity: 1,
+                y: 0,
+                duration: 1.8,
+                ease: "power4.out",
+                delay: (index % 3) * 0.15
+            });
+        });
+    </script>
+</body>
+</html>
