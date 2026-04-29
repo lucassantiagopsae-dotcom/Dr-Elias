@@ -69,6 +69,8 @@
                     animation: {
                         'float': 'float 8s ease-in-out infinite',
                         'shimmer': 'shimmer 2.5s linear infinite',
+                        'beam': 'beam 8s linear infinite',
+                        'orbit': 'orbit 40s linear infinite',
                     },
                     keyframes: {
                         float: {
@@ -78,6 +80,16 @@
                         shimmer: {
                             'from': { transform: 'translateX(-100%) skewX(-15deg)' },
                             'to': { transform: 'translateX(200%) skewX(-15deg)' },
+                        },
+                        beam: {
+                            '0%': { transform: 'translateX(-400px)', opacity: '0' },
+                            '15%': { opacity: '0.4' },
+                            '85%': { opacity: '0.4' },
+                            '100%': { transform: 'translateX(100vw)', opacity: '0' },
+                        },
+                        orbit: {
+                            'from': { transform: 'rotate(0deg)' },
+                            'to': { transform: 'rotate(360deg)' },
                         }
                     }
                 }
@@ -87,6 +99,8 @@
 
     <style>
         :root {
+            --brand-glow: rgba(14, 165, 233, 0.12);
+            --beam-light: rgba(14, 165, 233, 0.25);
             --mouse-x: 50%;
             --mouse-y: 50%;
         }
@@ -102,16 +116,23 @@
         .glass-master { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.03); }
         .glass-dark { background: rgba(10, 10, 10, 0.75); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
 
+        .beam-system { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; opacity: 0.6; }
+        .beam { position: absolute; height: 1px; width: 500px; background: linear-gradient(90deg, transparent, var(--beam-light), transparent); }
+
+        .hero-frame { perspective: 2000px; transform-style: preserve-3d; }
+        #hero-tilt { isolation: isolate; -webkit-mask-image: -webkit-radial-gradient(white, black); mask-image: radial-gradient(white, black); backface-visibility: hidden; transform: translateZ(0); }
+
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #f8fafc; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 16px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 20px; }
         ::-webkit-scrollbar-thumb:hover { background: #0ea5e9; }
 
         .rvl-v { opacity: 0; transform: translateY(40px); }
         .rvl-h { opacity: 0; transform: translateX(-40px); }
         .rvl-s { opacity: 0; transform: scale(0.95); }
 
-        .lab-section { padding: 160px 0; position: relative; } /* Multiples of 8 */
+        .lab-section { padding: 100px 0; position: relative; }
+        @media (min-width: 1024px) { .lab-section { padding: 160px 0; } }
 
         .btn-shimmer { position: relative; overflow: hidden; }
         .btn-shimmer::after { content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); animation: shimmer 4s infinite; }
@@ -124,14 +145,14 @@
 <body class="antialiased selection:bg-brand-100 selection:text-brand-900 overflow-x-hidden">
 
     <!-- Global Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-[100] glass-master h-24 flex items-center justify-between px-16 transition-all duration-700">
-        <div class="flex items-center gap-4 group cursor-pointer magnetic">
-            <div class="w-14 h-14 bg-neutral-900 text-brand-500 rounded-lg flex items-center justify-center border border-neutral-800 transition-all group-hover:bg-brand-500 group-hover:text-white duration-500 group-hover:rotate-12">
-                <iconify-icon icon="solar:star-shine-bold-duotone" width="32"></iconify-icon>
+    <nav class="fixed top-0 left-0 right-0 z-[100] glass-master h-20 lg:h-24 flex items-center justify-between px-4 lg:px-16 transition-all duration-700">
+        <div class="flex items-center gap-2 lg:gap-4 group cursor-pointer magnetic">
+            <div class="w-8 h-8 lg:w-14 lg:h-14 bg-neutral-900 text-brand-500 rounded-lg flex items-center justify-center border border-neutral-800 transition-all group-hover:bg-brand-500 group-hover:text-white duration-500 group-hover:rotate-12 shrink-0">
+                <iconify-icon icon="solar:star-shine-bold-duotone" class="text-lg lg:text-[32px]"></iconify-icon>
             </div>
             <div class="flex flex-col">
-                <span class="font-black text-neutral-900 tracking-tighter text-2xl uppercase">Dr. Elias Sousa</span>
-                <span class="text-[8px] font-bold text-brand-500 uppercase tracking-[0.6em] -mt-1">Uberaba / MG</span>
+                <span class="font-black text-neutral-900 tracking-tighter text-sm md:text-xl lg:text-2xl uppercase">Dr. Elias Sousa</span>
+                <span class="hidden sm:block text-[7px] lg:text-[8px] font-bold text-brand-500 uppercase tracking-[0.4em] lg:tracking-[0.6em] -mt-1">Uberaba / MG</span>
             </div>
         </div>
         <div class="hidden xl:flex gap-10 text-[11px] font-bold uppercase tracking-widest text-neutral-400">
@@ -141,49 +162,59 @@
             <a href="#diferenciais" class="hover:text-brand-500 transition-colors py-2">Diferenciais</a>
             <a href="#contato" class="hover:text-brand-500 transition-colors py-2">Agendamento</a>
         </div>
-        <div class="flex items-center gap-8">
-            <a href="https://wa.me/5534999999999" target="_blank" class="px-8 py-4 bg-brand-500 text-white font-black text-[10px] uppercase rounded-lg hover:bg-neutral-900 transition-all shadow-u-glow flex items-center gap-4">
-                <iconify-icon icon="solar:whatsapp-bold-duotone" width="20"></iconify-icon>
-                Falar com Especialista
+        <div class="flex items-center gap-4 lg:gap-8">
+            <a href="https://wa.me/5534999999999" target="_blank" class="px-3 py-2.5 lg:px-8 lg:py-4 bg-brand-500 text-white font-black text-[8px] md:text-[9px] lg:text-[10px] uppercase rounded-lg hover:bg-neutral-900 transition-all shadow-u-glow flex items-center gap-1.5 lg:gap-4 shrink-0">
+                <iconify-icon icon="solar:whatsapp-bold-duotone" class="text-sm lg:text-xl"></iconify-icon>
+                <span class="whitespace-nowrap">Falar com Especialista</span>
             </a>
         </div>
     </nav>
 
     <!-- Section 1: Hero (Light Mode, Cutout Image) -->
     <section id="inicio" class="min-h-screen relative flex items-center overflow-hidden bg-brand-50 pt-32">
+        <!-- Cinematic Beams -->
+        <div class="beam-system">
+            <div class="beam animate-beam" style="top: 15%; animation-duration: 9s;"></div>
+            <div class="beam animate-beam" style="top: 75%; animation-delay: 4s; animation-duration: 11s; opacity: 0.3"></div>
+            <div class="beam animate-beam" style="top: 45%; animation-delay: 2s; animation-duration: 13s; opacity: 0.1"></div>
+        </div>
+
+        <!-- Master Glow Protocol -->
+        <div class="absolute -top-[20%] -right-[10%] w-[800px] h-[800px] bg-brand-200/40 rounded-full blur-[200px] animate-pulse"></div>
+        <div class="absolute -bottom-[20%] -left-[10%] w-[800px] h-[800px] bg-brand-100/50 rounded-full blur-[200px] animate-pulse" style="animation-duration: 10s"></div>
+
         <!-- Concentric Circles Background -->
         <div class="absolute right-[-10%] top-1/2 -translate-y-1/2 w-[800px] h-[800px] pointer-events-none z-0 hidden lg:block opacity-60">
             <div class="absolute inset-0 rounded-full border border-brand-500/10 scale-[0.4]"></div>
             <div class="absolute inset-0 rounded-full border border-brand-500/10 scale-[0.6]"></div>
             <div class="absolute inset-0 rounded-full border border-brand-500/20 scale-[0.8]"></div>
             <div class="absolute inset-0 rounded-full border-2 border-brand-500/30 scale-[1.0]"></div>
-            <div class="absolute inset-0 bg-brand-500/5 rounded-full blur-[100px] scale-[0.5]"></div>
         </div>
 
-        <div class="max-w-[1600px] mx-auto px-8 lg:px-16 w-full grid lg:grid-cols-2 gap-16 relative z-10 h-full">
+        <div class="max-w-[1600px] mx-auto px-6 lg:px-16 w-full grid lg:grid-cols-2 gap-16 relative z-10 h-full">
             <!-- Left Column -->
-            <div class="flex flex-col justify-center py-16 pb-32 items-start">
+            <div class="flex flex-col justify-center py-16 pb-16 lg:pb-32 items-start mt-10 lg:mt-0">
                 <!-- Badge -->
-                <div class="inline-flex items-center gap-3 text-neutral-900 font-bold text-sm rvl-h mb-6">
+                <div class="inline-flex items-center gap-3 text-neutral-900 font-bold text-xs lg:text-sm rvl-h mb-6">
                     <iconify-icon icon="solar:tooth-bold-duotone" width="24" class="text-brand-500"></iconify-icon>
                     <span>Dr. Elias Gonçalves Sousa</span>
                 </div>
                 
-                <h1 class="text-4xl md:text-6xl xl:text-7xl font-black text-neutral-900 tracking-tighter leading-[1.05] rvl-v mb-6" data-delay="0.1">
+                <h1 class="text-5xl md:text-6xl xl:text-7xl font-black text-neutral-900 tracking-tighter leading-[1.05] rvl-v mb-6" data-delay="0.1">
                     Conquiste o sorriso <br>
                     que sempre <span class="text-brand-500">sonhou</span>
                 </h1>
 
-                <p class="text-xl md:text-2xl text-neutral-500 font-medium max-w-xl leading-relaxed rvl-v mb-10" data-delay="0.2">
+                <p class="text-lg md:text-xl lg:text-2xl text-neutral-500 font-medium max-w-xl leading-relaxed rvl-v mb-10" data-delay="0.2">
                     Com um atendimento altamente qualificado. Dr. Elias traz para Uberaba excelência em implantes e estética dental.
                 </p>
 
                 <div class="flex flex-wrap gap-8 rvl-v" data-delay="0.3">
-                    <a href="#contato" class="group relative px-10 py-5 bg-brand-500 text-white font-black rounded-lg shadow-u-glow flex items-center gap-4 text-base transition-all duration-500 hover:shadow-u-deep hover:-translate-y-1 overflow-hidden">
+                    <a href="#contato" class="group relative px-8 py-4 lg:px-10 lg:py-5 bg-brand-500 text-white font-black rounded-lg shadow-u-glow flex items-center gap-4 text-sm lg:text-base transition-all duration-500 hover:shadow-u-deep hover:-translate-y-1 overflow-hidden">
                         <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
                         <span class="relative z-10 flex items-center gap-4">
                             Agendar Avaliação
-                            <div class="w-8 h-8 bg-white/20 rounded flex items-center justify-center group-hover:translate-x-2 transition-transform duration-500">
+                            <div class="w-8 h-8 bg-white/20 rounded flex items-center justify-center group-hover:translate-x-2 group-hover:scale-125 transition-transform duration-500">
                                 <iconify-icon icon="solar:arrow-right-bold-duotone" width="16"></iconify-icon>
                             </div>
                         </span>
@@ -196,26 +227,31 @@
                 <!-- Doctor Image (Cutout) -->
                 <img src="assets/images/dr_elias.png" alt="Dr. Elias Gonçalves Sousa" class="relative z-10 max-h-[85vh] w-auto object-contain object-bottom drop-shadow-2xl">
                 
-                <!-- Floating Badges -->
-                <div class="absolute top-[20%] -left-4 lg:-left-8 z-20 glass-master px-6 py-4 rounded-lg flex items-center gap-4 animate-float shadow-u-soft">
-                    <div class="w-10 h-10 rounded-md bg-brand-50 text-brand-500 flex items-center justify-center">
-                        <iconify-icon icon="solar:user-bold-duotone" width="20"></iconify-icon>
+                <!-- Evolution of Badges (Diamond Style) -->
+                <div class="absolute top-[10%] lg:top-[20%] left-0 lg:-left-12 z-20 glass-master p-4 lg:p-6 rounded-2xl flex w-max items-center gap-4 lg:gap-5 animate-float shadow-u-deep">
+                    <div class="w-10 h-10 lg:w-14 lg:h-14 rounded-xl bg-brand-500 text-white flex items-center justify-center shadow-u-glow">
+                        <iconify-icon icon="solar:shield-plus-bold-duotone" class="text-xl lg:text-2xl"></iconify-icon>
                     </div>
-                    <span class="text-neutral-900 font-bold">Cirurgião Dentista</span>
+                    <div>
+                        <h4 class="text-neutral-900 font-black text-base lg:text-xl tracking-tight leading-none mb-1">Implantodontista</h4>
+                        <span class="text-[8px] lg:text-[10px] font-bold text-brand-500 uppercase tracking-widest">Especialista CRO</span>
+                    </div>
                 </div>
 
-                <div class="absolute top-[50%] -right-4 lg:-right-8 z-20 glass-master px-6 py-4 rounded-lg flex items-center gap-4 animate-float shadow-u-soft" style="animation-delay: 1s;">
-                    <div class="w-10 h-10 rounded-md bg-brand-50 text-brand-500 flex items-center justify-center">
-                        <iconify-icon icon="solar:shield-plus-bold-duotone" width="20"></iconify-icon>
+                <div class="absolute bottom-[20%] right-0 lg:left-0 z-20 glass-master p-4 lg:p-6 rounded-2xl flex w-max items-center gap-4 lg:gap-5 animate-float shadow-u-deep" style="animation-delay: 2s;">
+                    <div class="w-10 h-10 lg:w-14 lg:h-14 rounded-xl bg-neutral-900 text-brand-500 flex items-center justify-center">
+                        <iconify-icon icon="solar:star-shine-bold-duotone" class="text-xl lg:text-2xl"></iconify-icon>
                     </div>
-                    <span class="text-neutral-900 font-bold">Implantodontista</span>
+                    <div>
+                        <h4 class="text-neutral-900 font-black text-base lg:text-xl tracking-tight leading-none mb-1">Odontologia Estética</h4>
+                        <span class="text-[8px] lg:text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Padrão Diamante</span>
+                    </div>
                 </div>
 
-                <div class="absolute bottom-[20%] left-0 z-20 glass-master px-6 py-4 rounded-lg flex items-center gap-4 animate-float shadow-u-soft" style="animation-delay: 2s;">
-                    <div class="w-10 h-10 rounded-md bg-brand-50 text-brand-500 flex items-center justify-center">
-                        <iconify-icon icon="solar:star-shine-bold-duotone" width="20"></iconify-icon>
-                    </div>
-                    <span class="text-neutral-900 font-bold">Odontologia Estética</span>
+                <!-- Small Status Node -->
+                <div class="absolute bottom-[40%] -right-2 lg:-right-8 z-20 glass-master px-4 py-2 lg:px-6 lg:py-3 rounded-full flex w-max items-center gap-2 lg:gap-3 animate-float shadow-u-soft" style="animation-delay: 1s;">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span class="text-neutral-900 font-bold text-[10px] lg:text-xs uppercase tracking-widest">Tecnologia 3D</span>
                 </div>
             </div>
         </div>
@@ -223,28 +259,36 @@
 
     <!-- Section 2: Sobre o Dr. Elias -->
     <section id="sobre" class="lab-section bg-neutral-25">
-        <div class="max-w-7xl mx-auto px-16">
-            <div class="grid lg:grid-cols-2 gap-24 items-center">
+        <div class="max-w-7xl mx-auto px-6 lg:px-16">
+            <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
                 <div class="relative rvl-h">
-                    <div class="absolute -inset-10 bg-brand-500/5 rounded-xl blur-3xl"></div>
-                    <img src="assets/images/dr_elias.png" alt="Dr. Elias Gonçalves Sousa" class="relative z-10 rounded-xl shadow-u-deep grayscale hover:grayscale-0 transition-all duration-1000 grayscale">
-                    <div class="absolute -bottom-10 -right-10 glass-master p-8 rounded-xl shadow-u-glow z-20">
-                        <span class="block text-4xl font-black text-neutral-900 tracking-tighter leading-none mb-2">20+</span>
-                        <span class="text-[10px] font-bold text-brand-500 uppercase tracking-widest">Anos de Experiência</span>
+                    <div class="absolute -inset-4 lg:-inset-10 bg-brand-500/5 rounded-xl blur-3xl"></div>
+                    <img src="assets/images/dr_elias.png" alt="Dr. Elias Gonçalves Sousa" class="relative z-10 rounded-xl shadow-u-deep grayscale hover:grayscale-0 transition-all duration-1000">
+                    
+                    <!-- High Impact Surface -->
+                    <div class="absolute -bottom-4 -right-4 lg:-bottom-10 lg:-right-10 bg-brand-500 p-6 lg:p-8 rounded-xl text-white overflow-hidden group hover:-translate-y-2 transition-all duration-700 shadow-[0_30px_60px_-15px_rgba(14,165,233,0.4)] z-20 w-48 lg:w-64">
+                        <div class="h-1 w-8 lg:w-12 bg-white/30 rounded-full mb-4 lg:mb-6 group-hover:w-full transition-all duration-1000"></div>
+                        <h3 class="text-xs lg:text-sm font-bold mb-1 lg:mb-2 opacity-80 uppercase tracking-widest">Trajetória</h3>
+                        <div class="flex items-baseline gap-2 mb-2 lg:mb-4">
+                            <span class="text-3xl lg:text-5xl font-black tracking-tighter">20+</span>
+                            <span class="text-xs lg:text-sm font-bold opacity-80">Anos</span>
+                        </div>
+                        <p class="text-[10px] lg:text-xs font-medium opacity-90 leading-relaxed">De excelência clínica e milhares de implantes realizados.</p>
+                        <iconify-icon icon="solar:star-shine-bold-duotone" class="absolute -bottom-4 -right-4 lg:-bottom-6 lg:-right-6 opacity-10" width="80"></iconify-icon>
                     </div>
                 </div>
-                <div class="space-y-10 rvl-v">
+                <div class="space-y-8 lg:space-y-10 rvl-v mt-10 lg:mt-0">
                     <div class="space-y-4">
-                        <span class="text-[11px] font-black text-brand-500 uppercase tracking-[0.5em]">O Especialista</span>
-                        <h2 class="text-7xl font-black text-neutral-900 tracking-tighter leading-none">Estou de Volta e Pronto Para <span class="text-brand-500">Cuidar de Você.</span></h2>
+                        <span class="text-[10px] lg:text-[11px] font-black text-brand-500 uppercase tracking-[0.5em]">O Especialista</span>
+                        <h2 class="text-5xl lg:text-7xl font-black text-neutral-900 tracking-tighter leading-none">Estou de Volta e Pronto Para <span class="text-brand-500">Cuidar de Você.</span></h2>
                     </div>
-                    <p class="text-xl text-neutral-500 leading-relaxed font-medium">
+                    <p class="text-lg lg:text-xl text-neutral-500 leading-relaxed font-medium">
                         Após um período dedicado ao aperfeiçoamento de novas técnicas de reabilitação e implantes, Dr. Elias Gonçalves Sousa retorna a Uberaba para oferecer o que há de mais avançado na odontologia moderna.
                     </p>
-                    <p class="text-neutral-500 leading-relaxed">
+                    <p class="text-base lg:text-lg text-neutral-500 leading-relaxed">
                         Nosso diferencial não é apenas técnico — é o atendimento humanizado e personalizado. Aqui, você não é apenas mais um paciente; você é atendido diretamente pelo especialista, sem intermediários, garantindo segurança e transparência em cada etapa do seu tratamento.
                     </p>
-                    <div class="grid grid-cols-2 gap-8 pt-8">
+                    <div class="grid grid-cols-2 gap-6 lg:gap-8 pt-6 lg:pt-8">
                         <div class="space-y-2">
                              <iconify-icon icon="solar:diploma-verified-bold-duotone" class="text-brand-500" width="32"></iconify-icon>
                              <h4 class="font-bold text-neutral-900">Especialista CRO</h4>
@@ -261,64 +305,79 @@
 
     <!-- Section 3: Tratamentos -->
     <section id="tratamentos" class="lab-section bg-white overflow-visible">
-        <div class="max-w-7xl mx-auto px-16">
-            <div class="text-center mb-32 space-y-8 rvl-v">
-                <span class="text-[11px] font-black text-brand-500 uppercase tracking-[0.6em]">Nossas Especialidades</span>
-                <h2 class="text-7xl font-black text-neutral-900 tracking-tighter">Tratamentos de <span class="text-brand-300">Alta Precisão.</span></h2>
+        <div class="max-w-7xl mx-auto px-6 lg:px-16">
+            <div class="text-center mb-20 lg:mb-32 space-y-6 lg:space-y-8 rvl-v">
+                <span class="text-[10px] lg:text-[11px] font-black text-brand-500 uppercase tracking-[0.6em]">Nossas Especialidades</span>
+                <h2 class="text-5xl lg:text-7xl font-black text-neutral-900 tracking-tighter">Tratamentos de <span class="text-brand-300">Alta Precisão.</span></h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 shadow-safe">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 shadow-safe">
                 <!-- Implante -->
-                <div class="flashlight-card p-14 rounded-xl border border-neutral-100 shadow-u-soft hover:shadow-u-deep hover:-translate-y-6 flex flex-col items-start rvl-v" data-delay="0.1">
-                    <div class="w-16 h-16 bg-neutral-900 text-brand-500 rounded-lg flex items-center justify-center mb-10 shadow-lg">
-                        <iconify-icon icon="solar:shield-plus-bold-duotone" width="32"></iconify-icon>
+                <div class="flashlight-card group h-full p-8 lg:p-14 rounded-xl border border-neutral-100 shadow-u-soft hover:shadow-u-deep hover:-translate-y-4 lg:hover:-translate-y-6 flex flex-col items-start rvl-v" data-delay="0.1">
+                    <div class="w-14 h-14 lg:w-16 lg:h-16 bg-neutral-900 text-brand-500 rounded-lg flex items-center justify-center mb-8 lg:mb-10 shadow-lg">
+                        <iconify-icon icon="solar:shield-plus-bold-duotone" class="text-2xl lg:text-3xl"></iconify-icon>
                     </div>
-                    <h3 class="text-2xl font-black text-neutral-900 mb-4 tracking-tight">Implante Dentário</h3>
-                    <p class="text-neutral-500 leading-relaxed font-medium">Recupere sua função mastigatória e confiança com implantes de titânio de última geração.</p>
+                    <h3 class="text-xl lg:text-2xl font-black text-neutral-900 mb-4 tracking-tight">Implante Dentário</h3>
+                    <p class="text-neutral-500 text-sm lg:text-base leading-relaxed font-medium">Recupere sua função mastigatória e confiança com implantes de titânio de última geração.</p>
+                    <div class="mt-auto pt-8 flex items-center gap-3 text-brand-600 font-black text-[11px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all translate-x-0 group-hover:translate-x-2">
+                        Saber Mais <iconify-icon icon="solar:arrow-right-linear" width="18"></iconify-icon>
+                    </div>
                 </div>
                 
                 <!-- Estética -->
-                <div class="flashlight-card p-14 rounded-xl border border-neutral-100 shadow-u-soft hover:shadow-u-deep hover:-translate-y-6 flex flex-col items-start rvl-v" data-delay="0.2">
-                    <div class="w-16 h-16 bg-neutral-900 text-brand-500 rounded-lg flex items-center justify-center mb-10 shadow-lg">
-                        <iconify-icon icon="solar:star-shine-bold-duotone" width="32"></iconify-icon>
+                <div class="flashlight-card group h-full p-8 lg:p-14 rounded-xl border border-neutral-100 shadow-u-soft hover:shadow-u-deep hover:-translate-y-4 lg:hover:-translate-y-6 flex flex-col items-start rvl-v" data-delay="0.2">
+                    <div class="w-14 h-14 lg:w-16 lg:h-16 bg-neutral-900 text-brand-500 rounded-lg flex items-center justify-center mb-8 lg:mb-10 shadow-lg">
+                        <iconify-icon icon="solar:star-shine-bold-duotone" class="text-2xl lg:text-3xl"></iconify-icon>
                     </div>
-                    <h3 class="text-2xl font-black text-neutral-900 mb-4 tracking-tight">Estética Dental</h3>
-                    <p class="text-neutral-500 leading-relaxed font-medium">Clareamento a laser e facetas de porcelana para um sorriso radiante e natural.</p>
+                    <h3 class="text-xl lg:text-2xl font-black text-neutral-900 mb-4 tracking-tight">Estética Dental</h3>
+                    <p class="text-neutral-500 text-sm lg:text-base leading-relaxed font-medium">Clareamento a laser e facetas de porcelana para um sorriso radiante e natural.</p>
+                    <div class="mt-auto pt-8 flex items-center gap-3 text-brand-600 font-black text-[11px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all translate-x-0 group-hover:translate-x-2">
+                        Saber Mais <iconify-icon icon="solar:arrow-right-linear" width="18"></iconify-icon>
+                    </div>
                 </div>
 
                 <!-- Prótese -->
-                <div class="flashlight-card p-14 rounded-xl border border-neutral-100 shadow-u-soft hover:shadow-u-deep hover:-translate-y-6 flex flex-col items-start rvl-v" data-delay="0.3">
-                    <div class="w-16 h-16 bg-neutral-900 text-brand-500 rounded-lg flex items-center justify-center mb-10 shadow-lg">
-                        <iconify-icon icon="solar:mask-happly-bold-duotone" width="32"></iconify-icon>
+                <div class="flashlight-card group h-full p-8 lg:p-14 rounded-xl border border-neutral-100 shadow-u-soft hover:shadow-u-deep hover:-translate-y-4 lg:hover:-translate-y-6 flex flex-col items-start rvl-v" data-delay="0.3">
+                    <div class="w-14 h-14 lg:w-16 lg:h-16 bg-neutral-900 text-brand-500 rounded-lg flex items-center justify-center mb-8 lg:mb-10 shadow-lg">
+                        <iconify-icon icon="solar:mask-happly-bold-duotone" class="text-2xl lg:text-3xl"></iconify-icon>
                     </div>
-                    <h3 class="text-2xl font-black text-neutral-900 mb-4 tracking-tight">Prótese & Reabilitação</h3>
-                    <p class="text-neutral-500 leading-relaxed font-medium">Soluções fixas ou removíveis desenhadas sob medida para sua anatomia facial.</p>
+                    <h3 class="text-xl lg:text-2xl font-black text-neutral-900 mb-4 tracking-tight">Prótese & Reabilitação</h3>
+                    <p class="text-neutral-500 text-sm lg:text-base leading-relaxed font-medium">Soluções fixas ou removíveis desenhadas sob medida para sua anatomia facial.</p>
+                    <div class="mt-auto pt-8 flex items-center gap-3 text-brand-600 font-black text-[11px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all translate-x-0 group-hover:translate-x-2">
+                        Saber Mais <iconify-icon icon="solar:arrow-right-linear" width="18"></iconify-icon>
+                    </div>
                 </div>
 
                 <!-- Cirurgia -->
-                <div class="flashlight-card p-14 rounded-xl border border-neutral-100 shadow-u-soft hover:shadow-u-deep hover:-translate-y-6 flex flex-col items-start rvl-v" data-delay="0.4">
-                    <div class="w-16 h-16 bg-neutral-900 text-brand-500 rounded-lg flex items-center justify-center mb-10 shadow-lg">
-                        <iconify-icon icon="solar:health-bold-duotone" width="32"></iconify-icon>
+                <div class="flashlight-card group h-full p-8 lg:p-14 rounded-xl border border-neutral-100 shadow-u-soft hover:shadow-u-deep hover:-translate-y-4 lg:hover:-translate-y-6 flex flex-col items-start rvl-v" data-delay="0.4">
+                    <div class="w-14 h-14 lg:w-16 lg:h-16 bg-neutral-900 text-brand-500 rounded-lg flex items-center justify-center mb-8 lg:mb-10 shadow-lg">
+                        <iconify-icon icon="solar:health-bold-duotone" class="text-2xl lg:text-3xl"></iconify-icon>
                     </div>
-                    <h3 class="text-2xl font-black text-neutral-900 mb-4 tracking-tight">Cirurgia Oral</h3>
-                    <p class="text-neutral-500 leading-relaxed font-medium">Procedimentos cirúrgicos precisos com foco no conforto e rápida recuperação pós-operatória.</p>
+                    <h3 class="text-xl lg:text-2xl font-black text-neutral-900 mb-4 tracking-tight">Cirurgia Oral</h3>
+                    <p class="text-neutral-500 text-sm lg:text-base leading-relaxed font-medium">Procedimentos cirúrgicos precisos com foco no conforto e rápida recuperação pós-operatória.</p>
+                    <div class="mt-auto pt-8 flex items-center gap-3 text-brand-600 font-black text-[11px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all translate-x-0 group-hover:translate-x-2">
+                        Saber Mais <iconify-icon icon="solar:arrow-right-linear" width="18"></iconify-icon>
+                    </div>
                 </div>
 
                 <!-- Clínica Geral -->
-                <div class="flashlight-card p-14 rounded-xl border border-neutral-100 shadow-u-soft hover:shadow-u-deep hover:-translate-y-6 flex flex-col items-start rvl-v" data-delay="0.5">
-                    <div class="w-16 h-16 bg-neutral-900 text-brand-500 rounded-lg flex items-center justify-center mb-10 shadow-lg">
-                        <iconify-icon icon="solar:shield-check-bold-duotone" width="32"></iconify-icon>
+                <div class="flashlight-card group h-full p-8 lg:p-14 rounded-xl border border-neutral-100 shadow-u-soft hover:shadow-u-deep hover:-translate-y-4 lg:hover:-translate-y-6 flex flex-col items-start rvl-v" data-delay="0.5">
+                    <div class="w-14 h-14 lg:w-16 lg:h-16 bg-neutral-900 text-brand-500 rounded-lg flex items-center justify-center mb-8 lg:mb-10 shadow-lg">
+                        <iconify-icon icon="solar:shield-check-bold-duotone" class="text-2xl lg:text-3xl"></iconify-icon>
                     </div>
-                    <h3 class="text-2xl font-black text-neutral-900 mb-4 tracking-tight">Clínica Geral</h3>
-                    <p class="text-neutral-500 leading-relaxed font-medium">Manutenção preventiva e cuidados contínuos para a saúde bucal de toda a família.</p>
+                    <h3 class="text-xl lg:text-2xl font-black text-neutral-900 mb-4 tracking-tight">Clínica Geral</h3>
+                    <p class="text-neutral-500 text-sm lg:text-base leading-relaxed font-medium">Manutenção preventiva e cuidados contínuos para a saúde bucal de toda a família.</p>
+                    <div class="mt-auto pt-8 flex items-center gap-3 text-brand-600 font-black text-[11px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all translate-x-0 group-hover:translate-x-2">
+                        Saber Mais <iconify-icon icon="solar:arrow-right-linear" width="18"></iconify-icon>
+                    </div>
                 </div>
 
                 <!-- Card de Chamada -->
-                <div class="bg-neutral-950 p-14 rounded-xl relative overflow-hidden group hover:-translate-y-6 transition-all duration-700 shadow-u-deep rvl-v" data-delay="0.6">
+                <div class="bg-neutral-950 p-8 lg:p-14 rounded-xl relative overflow-hidden group hover:-translate-y-4 lg:hover:-translate-y-6 transition-all duration-700 shadow-u-deep rvl-v" data-delay="0.6">
                      <div class="absolute -right-20 -top-20 w-[320px] h-[320px] bg-brand-500/10 rounded-full blur-[100px] group-hover:scale-150 transition-transform duration-1000"></div>
                      <div class="relative z-10 space-y-8 flex flex-col h-full">
-                        <h3 class="text-white text-3xl font-black tracking-tight leading-tight">Mais de <span class="text-brand-400">5.000</span><br>Sorrisos Transformados em Uberaba.</h3>
-                        <a href="#contato" class="mt-auto py-6 bg-white/5 border border-white/10 text-white font-black text-xs uppercase tracking-widest rounded-lg hover:bg-brand-500 transition-all text-center">Fazer Parte Dessa História</a>
+                        <h3 class="text-white text-2xl lg:text-3xl font-black tracking-tight leading-tight">Mais de <span class="text-brand-400">5.000</span><br>Sorrisos Transformados em Uberaba.</h3>
+                        <a href="#contato" class="mt-auto py-4 lg:py-6 px-4 bg-white/5 border border-white/10 text-white font-black text-[10px] lg:text-xs uppercase tracking-widest rounded-lg hover:bg-brand-500 transition-all text-center">Fazer Parte Dessa História</a>
                      </div>
                 </div>
             </div>
@@ -328,55 +387,57 @@
     <!-- Section 4: Diferenciais -->
     <section id="diferenciais" class="lab-section bg-neutral-950 text-white overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-br from-brand-900/5 via-neutral-950 to-neutral-950"></div>
-        <div class="max-w-7xl mx-auto px-16 relative z-10">
-            <div class="grid lg:grid-cols-2 gap-32 items-center">
-                <div class="space-y-12 max-w-lg">
+        <div class="max-w-7xl mx-auto px-6 lg:px-16 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16 lg:gap-32 items-center">
+                <div class="space-y-8 lg:space-y-12 max-w-lg">
                     <h2 class="text-5xl lg:text-6xl font-black tracking-tighter leading-[1.1] rvl-h">Por que Escolher <span class="text-brand-500">Dr. Elias?</span></h2>
                     
                     <div class="space-y-4 rvl-v">
-                        <div class="p-6 glass-master !bg-white/5 border-white/5 rounded-xl flex items-center gap-6 hover:border-brand-500/50 transition-all group">
-                             <div class="w-14 h-14 bg-brand-500 rounded-lg flex items-center justify-center shadow-u-glow magnetic shrink-0">
-                                <iconify-icon icon="solar:user-bold-duotone" width="28" class="text-white"></iconify-icon>
+                        <div class="p-4 lg:p-6 glass-master !bg-white/5 border-white/5 rounded-xl flex items-center gap-4 lg:gap-6 hover:border-brand-500/50 transition-all group">
+                             <div class="w-10 h-10 lg:w-14 lg:h-14 bg-brand-500 rounded-lg flex items-center justify-center shadow-u-glow magnetic shrink-0">
+                                <iconify-icon icon="solar:user-bold-duotone" class="text-white text-xl lg:text-2xl"></iconify-icon>
                              </div>
                              <div class="space-y-1">
-                                <h4 class="text-white font-black text-lg tracking-tight">Atendimento Direto</h4>
-                                <p class="text-neutral-400 text-sm font-medium">Conversa direta com o especialista, sem intermediários ou atrasos.</p>
+                                <h4 class="text-white font-black text-base lg:text-lg tracking-tight">Atendimento Direto</h4>
+                                <p class="text-neutral-400 text-xs lg:text-sm font-medium">Conversa direta com o especialista, sem intermediários ou atrasos.</p>
                              </div>
                         </div>
-                        <div class="p-6 glass-master !bg-white/5 border-white/5 rounded-xl flex items-center gap-6 hover:border-brand-500/50 transition-all group">
-                             <div class="w-14 h-14 bg-neutral-900 border border-white/10 rounded-lg flex items-center justify-center magnetic shrink-0">
-                                <iconify-icon icon="solar:minimalistic-magnifer-zoom-in-bold-duotone" width="28" class="text-brand-500"></iconify-icon>
+                        <div class="p-4 lg:p-6 glass-master !bg-white/5 border-white/5 rounded-xl flex items-center gap-4 lg:gap-6 hover:border-brand-500/50 transition-all group">
+                             <div class="w-10 h-10 lg:w-14 lg:h-14 bg-neutral-900 border border-white/10 rounded-lg flex items-center justify-center magnetic shrink-0">
+                                <iconify-icon icon="solar:minimalistic-magnifer-zoom-in-bold-duotone" class="text-brand-500 text-xl lg:text-2xl"></iconify-icon>
                              </div>
                              <div class="space-y-1">
-                                <h4 class="text-white font-black text-lg tracking-tight">Tecnologia Digital</h4>
-                                <p class="text-neutral-400 text-sm font-medium">Equipamentos modernos para diagnósticos rápidos e precisos.</p>
+                                <h4 class="text-white font-black text-base lg:text-lg tracking-tight">Tecnologia Digital</h4>
+                                <p class="text-neutral-400 text-xs lg:text-sm font-medium">Equipamentos modernos para diagnósticos rápidos e precisos.</p>
                              </div>
                         </div>
-                        <div class="p-6 glass-master !bg-white/5 border-white/5 rounded-xl flex items-center gap-6 hover:border-brand-500/50 transition-all group">
-                             <div class="w-14 h-14 bg-neutral-900 border border-white/10 rounded-lg flex items-center justify-center magnetic shrink-0">
-                                <iconify-icon icon="solar:point-on-map-bold-duotone" width="28" class="text-brand-500"></iconify-icon>
+                        <div class="p-4 lg:p-6 glass-master !bg-white/5 border-white/5 rounded-xl flex items-center gap-4 lg:gap-6 hover:border-brand-500/50 transition-all group">
+                             <div class="w-10 h-10 lg:w-14 lg:h-14 bg-neutral-900 border border-white/10 rounded-lg flex items-center justify-center magnetic shrink-0">
+                                <iconify-icon icon="solar:point-on-map-bold-duotone" class="text-brand-500 text-xl lg:text-2xl"></iconify-icon>
                              </div>
                              <div class="space-y-1">
-                                <h4 class="text-white font-black text-lg tracking-tight">Localização Central</h4>
-                                <p class="text-neutral-400 text-sm font-medium">No coração de Uberaba, na Rua Duque de Caxias, facil acesso e estacionamento.</p>
+                                <h4 class="text-white font-black text-base lg:text-lg tracking-tight">Localização Central</h4>
+                                <p class="text-neutral-400 text-xs lg:text-sm font-medium">No coração de Uberaba, facil acesso e estacionamento.</p>
                              </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Simulation Visualizer -->
-                <div class="flex items-center justify-center rvl-s">
-                    <div class="relative">
-                        <div class="w-[480px] h-[480px] border border-white/5 rounded-full flex items-center justify-center animate-[spin_40s_linear_infinite]">
-                            <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-12 h-12 bg-white rounded-lg shadow-[0_0_80px_rgba(255,255,255,0.4)] flex items-center justify-center text-brand-500">
-                                <iconify-icon icon="solar:stars-minimalistic-bold-duotone" width="28"></iconify-icon>
+                <!-- Simulation Visualizer (Orbiting Ring Protocol) -->
+                <div class="flex items-center justify-center rvl-s w-full">
+                    <div class="relative scale-75 md:scale-100">
+                        <!-- Orbiting Shield Protocol -->
+                        <div class="w-[20rem] h-[20rem] md:w-[32rem] md:h-[32rem] border border-white/5 rounded-full flex items-center justify-center animate-orbit">
+                            <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-10 h-10 md:w-12 md:h-12 bg-neutral-900 border border-white/10 rounded-xl shadow-[0_0_40px_rgba(255,255,255,0.1)] flex items-center justify-center text-brand-500">
+                                <iconify-icon icon="solar:shield-check-bold-duotone" class="text-xl md:text-2xl"></iconify-icon>
                             </div>
+                            <div class="absolute bottom-6 right-6 md:bottom-10 md:right-10 w-3 h-3 md:w-4 md:h-4 bg-brand-500 rounded-full blur-[2px]"></div>
                         </div>
                         <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="w-[280px] h-[280px] border border-white/10 rounded-full flex items-center justify-center overflow-hidden">
+                            <div class="w-48 h-48 md:w-72 md:h-72 border border-white/10 rounded-full flex items-center justify-center overflow-hidden">
                                 <div class="w-full h-full bg-gradient-to-br from-brand-400 to-brand-600 opacity-20 animate-pulse"></div>
                                 <div class="absolute inset-0 flex items-center justify-center">
-                                    <iconify-icon icon="solar:heart-pulse-bold-duotone" width="120" class="text-white animate-float"></iconify-icon>
+                                    <iconify-icon icon="solar:health-bold-duotone" class="text-[80px] md:text-[120px] text-white animate-float"></iconify-icon>
                                 </div>
                             </div>
                         </div>
@@ -388,14 +449,14 @@
 
     <!-- Section 5: Depoimentos -->
     <section class="lab-section bg-white overflow-visible">
-        <div class="max-w-7xl mx-auto px-16">
-            <div class="text-center mb-32 space-y-8 rvl-v">
-                 <span class="text-[11px] font-black text-brand-500 uppercase tracking-[0.6em]">Voz do Paciente</span>
-                 <h2 class="text-7xl font-black text-neutral-900 tracking-tighter">Confiança que <span class="text-neutral-200">Gera Sorrisos.</span></h2>
+        <div class="max-w-7xl mx-auto px-6 lg:px-16">
+            <div class="text-center mb-20 lg:mb-32 space-y-6 lg:space-y-8 rvl-v">
+                 <span class="text-[10px] lg:text-[11px] font-black text-brand-500 uppercase tracking-[0.6em]">Voz do Paciente</span>
+                 <h2 class="text-5xl lg:text-7xl font-black text-neutral-900 tracking-tighter">Confiança que <span class="text-brand-400">Gera Sorrisos.</span></h2>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 shadow-safe">
-                <div class="glass-master p-12 rounded-xl border-brand-100 shadow-u-glow hover:-translate-y-6 transition-all duration-700 group flex flex-col rvl-s" data-delay="0.1">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 shadow-safe">
+                <div class="glass-master p-8 lg:p-12 rounded-xl border-brand-100 shadow-u-glow hover:-translate-y-4 lg:hover:-translate-y-6 transition-all duration-700 group flex flex-col rvl-s" data-delay="0.1">
                     <div class="flex gap-1 mb-8">
                         <iconify-icon icon="solar:star-bold" class="text-brand-500" width="20"></iconify-icon>
                         <iconify-icon icon="solar:star-bold" class="text-brand-500" width="20"></iconify-icon>
@@ -403,7 +464,7 @@
                         <iconify-icon icon="solar:star-bold" class="text-brand-500" width="20"></iconify-icon>
                         <iconify-icon icon="solar:star-bold" class="text-brand-500" width="20"></iconify-icon>
                     </div>
-                    <p class="text-xl text-neutral-600 font-medium leading-relaxed mb-10 italic">"O Dr. Elias cuidou de toda minha família por anos. Saber que ele está de volta com essa estrutura moderna é uma excelente notícia para Uberaba!"</p>
+                    <p class="text-lg lg:text-xl text-neutral-600 font-medium leading-relaxed mb-10 italic">"O Dr. Elias cuidou de toda minha família por anos. Saber que ele está de volta com essa estrutura moderna é uma excelente notícia para Uberaba!"</p>
                     <div class="mt-auto flex items-center gap-4">
                         <div class="w-12 h-12 bg-brand-50 rounded-full flex items-center justify-center text-brand-500 font-bold">M</div>
                         <div>
@@ -413,7 +474,7 @@
                     </div>
                 </div>
 
-                <div class="glass-master p-12 rounded-xl border-brand-100 shadow-u-glow hover:-translate-y-6 transition-all duration-700 group flex flex-col rvl-s" data-delay="0.2">
+                <div class="glass-master p-8 lg:p-12 rounded-xl border-brand-100 shadow-u-glow hover:-translate-y-4 lg:hover:-translate-y-6 transition-all duration-700 group flex flex-col rvl-s" data-delay="0.2">
                     <div class="flex gap-1 mb-8">
                         <iconify-icon icon="solar:star-bold" class="text-brand-500" width="20"></iconify-icon>
                         <iconify-icon icon="solar:star-bold" class="text-brand-500" width="20"></iconify-icon>
@@ -421,7 +482,7 @@
                         <iconify-icon icon="solar:star-bold" class="text-brand-500" width="20"></iconify-icon>
                         <iconify-icon icon="solar:star-bold" class="text-brand-500" width="20"></iconify-icon>
                     </div>
-                    <p class="text-xl text-neutral-600 font-medium leading-relaxed mb-10 italic">"Estava com muito receio de fazer meus implantes, mas o Dr. Elias me passou uma confiança absurda. O resultado ficou perfeito e sem dor."</p>
+                    <p class="text-lg lg:text-xl text-neutral-600 font-medium leading-relaxed mb-10 italic">"Estava com muito receio de fazer meus implantes, mas o Dr. Elias me passou uma confiança absurda. O resultado ficou perfeito e sem dor."</p>
                     <div class="mt-auto flex items-center gap-4">
                         <div class="w-12 h-12 bg-brand-50 rounded-full flex items-center justify-center text-brand-500 font-bold">J</div>
                         <div>
@@ -431,7 +492,7 @@
                     </div>
                 </div>
 
-                <div class="glass-master p-12 rounded-xl border-brand-100 shadow-u-glow hover:-translate-y-6 transition-all duration-700 group flex flex-col rvl-s" data-delay="0.3">
+                <div class="glass-master p-8 lg:p-12 rounded-xl border-brand-100 shadow-u-glow hover:-translate-y-4 lg:hover:-translate-y-6 transition-all duration-700 group flex flex-col rvl-s" data-delay="0.3">
                     <div class="flex gap-1 mb-8">
                         <iconify-icon icon="solar:star-bold" class="text-brand-500" width="20"></iconify-icon>
                         <iconify-icon icon="solar:star-bold" class="text-brand-500" width="20"></iconify-icon>
@@ -439,7 +500,7 @@
                         <iconify-icon icon="solar:star-bold" class="text-brand-500" width="20"></iconify-icon>
                         <iconify-icon icon="solar:star-bold" class="text-brand-500" width="20"></iconify-icon>
                     </div>
-                    <p class="text-xl text-neutral-600 font-medium leading-relaxed mb-10 italic">"Clínica impecável e atendimento muito pontual. Você sente que o profissional realmente domina o que está fazendo. Recomendo nota 10!"</p>
+                    <p class="text-lg lg:text-xl text-neutral-600 font-medium leading-relaxed mb-10 italic">"Clínica impecável e atendimento muito pontual. Você sente que o profissional realmente domina o que está fazendo. Recomendo nota 10!"</p>
                     <div class="mt-auto flex items-center gap-4">
                         <div class="w-12 h-12 bg-brand-50 rounded-full flex items-center justify-center text-brand-500 font-bold">A</div>
                         <div>
@@ -454,64 +515,74 @@
 
     <!-- Section 6: Contato & Agendamento -->
     <section id="contato" class="lab-section bg-neutral-25">
-        <div class="max-w-7xl mx-auto px-16">
-            <div class="grid lg:grid-cols-2 gap-32 items-center">
-                <div class="space-y-12 rvl-h">
-                    <h2 class="text-8xl font-black text-neutral-900 tracking-tighter leading-none">Agende sua <span class="text-brand-500">Avaliação.</span></h2>
-                    <p class="text-2xl text-neutral-500 font-medium">Sua jornada para um novo sorriso começa com uma conversa simples e humanizada.</p>
+        <div class="max-w-7xl mx-auto px-6 lg:px-16">
+            <div class="grid lg:grid-cols-2 gap-16 lg:gap-32 items-center">
+                <div class="space-y-8 lg:space-y-12 rvl-h">
+                    <h2 class="text-5xl lg:text-7xl xl:text-8xl font-black text-neutral-900 tracking-tighter leading-none">Agende sua <span class="text-brand-500">Avaliação.</span></h2>
+                    <p class="text-lg lg:text-2xl text-neutral-500 font-medium">Sua jornada para um novo sorriso começa com uma conversa simples e humanizada.</p>
                     
-                    <div class="space-y-8">
-                        <div class="flex items-center gap-6">
-                            <div class="w-16 h-16 bg-brand-100 text-brand-500 rounded-lg flex items-center justify-center shrink-0">
-                                <iconify-icon icon="solar:map-point-wave-bold-duotone" width="32"></iconify-icon>
+                    <div class="space-y-6 lg:space-y-8">
+                        <div class="flex items-center gap-4 lg:gap-6">
+                            <div class="w-12 h-12 lg:w-16 lg:h-16 bg-brand-100 text-brand-500 rounded-lg flex items-center justify-center shrink-0">
+                                <iconify-icon icon="solar:map-point-wave-bold-duotone" class="text-2xl lg:text-3xl"></iconify-icon>
                             </div>
                             <div>
-                                <h5 class="text-neutral-900 font-black">Endereço Central</h5>
-                                <p class="text-neutral-500 text-sm">Rua Duque de Caxias, 305 — São Benedito, Uberaba/MG</p>
+                                <h5 class="text-neutral-900 font-black text-sm lg:text-base">Endereço Central</h5>
+                                <p class="text-neutral-500 text-xs lg:text-sm">Rua Duque de Caxias, 305 — São Benedito, Uberaba/MG</p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-6">
-                            <div class="w-16 h-16 bg-brand-100 text-brand-500 rounded-lg flex items-center justify-center shrink-0">
-                                <iconify-icon icon="solar:chat-round-dots-bold-duotone" width="32"></iconify-icon>
+                        <div class="flex items-center gap-4 lg:gap-6">
+                            <div class="w-12 h-12 lg:w-16 lg:h-16 bg-brand-100 text-brand-500 rounded-lg flex items-center justify-center shrink-0">
+                                <iconify-icon icon="solar:chat-round-dots-bold-duotone" class="text-2xl lg:text-3xl"></iconify-icon>
                             </div>
                             <div>
-                                <h5 class="text-neutral-900 font-black">WhatsApp Direto</h5>
-                                <p class="text-neutral-500 text-sm">(34) 99999-9999</p>
+                                <h5 class="text-neutral-900 font-black text-sm lg:text-base">WhatsApp Direto</h5>
+                                <p class="text-neutral-500 text-xs lg:text-sm">(34) 99999-9999</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="rvl-v">
-                    <div class="glass-master p-16 rounded-xl border border-neutral-100 shadow-u-deep">
-                        <form class="space-y-8">
-                            <div class="space-y-4">
+                    <div class="glass-master p-8 lg:p-16 rounded-xl border border-neutral-100 shadow-u-deep">
+                        <form class="space-y-6">
+                            <div class="space-y-1.5">
                                 <label class="text-[11px] font-bold text-neutral-400 uppercase tracking-widest ml-2">Qual seu nome?</label>
-                                <input type="text" placeholder="Nome completo" class="w-full h-16 px-8 bg-white border-2 border-neutral-100 rounded-lg outline-none focus:border-brand-500 focus:ring-[8px] focus:ring-brand-500/5 transition-all font-bold text-neutral-900">
+                                <div class="relative group">
+                                    <input type="text" placeholder="Nome completo" class="w-full h-14 lg:h-16 px-6 lg:px-8 bg-white border-2 border-neutral-100 rounded-lg outline-none focus:border-brand-500 focus:ring-[8px] focus:ring-brand-500/5 transition-all font-bold text-neutral-900 placeholder:text-neutral-300">
+                                    <iconify-icon icon="solar:user-circle-bold-duotone" class="absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 text-neutral-200 group-focus-within:text-brand-500 transition-colors" width="24"></iconify-icon>
+                                </div>
                             </div>
-                            <div class="space-y-4">
+                            <div class="space-y-1.5">
                                 <label class="text-[11px] font-bold text-neutral-400 uppercase tracking-widest ml-2">Qual seu WhatsApp?</label>
-                                <input type="tel" placeholder="(34) 99999-9999" class="w-full h-16 px-8 bg-white border-2 border-neutral-100 rounded-lg outline-none focus:border-brand-500 focus:ring-[8px] focus:ring-brand-500/5 transition-all font-bold text-neutral-900">
+                                <div class="relative group">
+                                    <input type="tel" placeholder="(34) 99999-9999" class="w-full h-14 lg:h-16 px-6 lg:px-8 bg-white border-2 border-neutral-100 rounded-lg outline-none focus:border-brand-500 focus:ring-[8px] focus:ring-brand-500/5 transition-all font-bold text-neutral-900 placeholder:text-neutral-300">
+                                    <iconify-icon icon="solar:phone-calling-bold-duotone" class="absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 text-neutral-200 group-focus-within:text-brand-500 transition-colors" width="24"></iconify-icon>
+                                </div>
                             </div>
-                            <div class="space-y-4">
+                            <div class="space-y-1.5">
                                 <label class="text-[11px] font-bold text-neutral-400 uppercase tracking-widest ml-2">Assunto de interesse?</label>
-                                <select class="w-full h-16 px-8 bg-white border-2 border-neutral-100 rounded-lg outline-none focus:border-brand-500 focus:ring-[8px] focus:ring-brand-500/5 transition-all font-bold text-neutral-900 appearance-none">
-                                    <option>Implantes Dentários</option>
-                                    <option>Estética (Facetas/Clareamento)</option>
-                                    <option>Prótese Dentária</option>
-                                    <option>Check-up Geral</option>
-                                </select>
+                                <div class="relative group">
+                                    <select class="w-full h-14 lg:h-16 px-6 lg:px-8 bg-white border-2 border-neutral-100 rounded-lg outline-none focus:border-brand-500 focus:ring-[8px] focus:ring-brand-500/5 transition-all font-bold text-neutral-900 appearance-none text-sm lg:text-base">
+                                        <option>Implantes Dentários</option>
+                                        <option>Estética (Facetas/Clareamento)</option>
+                                        <option>Prótese Dentária</option>
+                                        <option>Check-up Geral</option>
+                                    </select>
+                                    <iconify-icon icon="solar:alt-arrow-down-linear" class="absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 text-neutral-200" width="24"></iconify-icon>
+                                </div>
                             </div>
-                            <button type="submit" class="w-full relative px-10 py-6 bg-brand-500 text-white font-black rounded-lg shadow-u-glow flex items-center justify-center gap-4 text-base transition-all duration-500 hover:shadow-u-deep hover:-translate-y-1 overflow-hidden group">
+                            <button type="submit" class="w-full relative px-6 py-4 lg:px-10 lg:py-6 bg-brand-500 text-white font-black rounded-lg shadow-u-glow flex items-center justify-center gap-3 lg:gap-4 text-sm lg:text-base transition-all duration-500 hover:shadow-u-deep hover:-translate-y-1 overflow-hidden group">
                                 <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
-                                <span class="relative z-10 flex items-center justify-center gap-4">
-                                    Enviar e Falar no WhatsApp
-                                    <div class="w-8 h-8 bg-white/20 rounded flex items-center justify-center group-hover:translate-x-2 transition-transform duration-500">
-                                        <iconify-icon icon="solar:whatsapp-bold-duotone" width="18"></iconify-icon>
+                                <span class="relative z-10 flex items-center justify-center gap-3 lg:gap-4 text-white">
+                                    <span class="hidden sm:inline">Enviar e Falar no WhatsApp</span>
+                                    <span class="sm:hidden">Agendar Consulta</span>
+                                    <div class="w-8 h-8 bg-white/20 rounded flex items-center justify-center group-hover:translate-x-2 transition-transform duration-500 text-white">
+                                        <iconify-icon icon="ic:baseline-whatsapp" width="18"></iconify-icon>
                                     </div>
                                 </span>
                             </button>
-                            <p class="text-center text-[10px] font-bold text-neutral-300 uppercase tracking-widest">Sem compromisso. Resposta rápida.</p>
+                            <p class="text-center text-[9px] lg:text-[10px] font-bold text-neutral-300 uppercase tracking-widest">Sem compromisso. Resposta rápida.</p>
                         </form>
                     </div>
                 </div>
@@ -519,28 +590,24 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="py-24 text-center border-t border-neutral-100 bg-white">
-        <div class="max-w-7xl mx-auto px-16 flex flex-col items-center gap-16">
-            <div class="flex items-center gap-6">
-                 <div class="w-12 h-12 bg-neutral-900 text-brand-500 rounded-lg flex items-center justify-center shadow-lg">
-                    <iconify-icon icon="solar:star-shine-bold-duotone" width="28"></iconify-icon>
-                 </div>
-                 <div class="flex flex-col text-left">
-                    <span class="font-black text-neutral-900 tracking-tighter text-2xl">Clínica Dr. Elias Sousa</span>
-                    <span class="text-[9px] font-bold text-neutral-300 uppercase tracking-[0.6em] -mt-1">Uberaba / MG</span>
-                 </div>
+    <!-- PERFECTED FOOTER -->
+    <footer class="py-20 lg:py-32 text-center border-t border-neutral-900 bg-neutral-950">
+        <div class="max-w-7xl mx-auto px-6 lg:px-16 flex flex-col items-center gap-10 lg:gap-16">
+            <div class="flex items-center gap-4 lg:gap-5">
+                <div class="w-12 h-12 lg:w-14 lg:h-14 bg-brand-500/10 border border-brand-500/20 text-brand-500 rounded-xl flex items-center justify-center shadow-u-glow">
+                    <iconify-icon icon="solar:star-shine-bold-duotone" class="text-2xl lg:text-3xl"></iconify-icon>
+                </div>
+                <div class="flex flex-col text-left">
+                    <span class="font-black text-white tracking-tighter text-xl lg:text-3xl">Clínica Dr. Elias Sousa</span>
+                    <span class="text-[8px] lg:text-[10px] font-bold text-neutral-400 uppercase tracking-[0.4em] lg:tracking-[0.6em] -mt-1">Excelência Odontológica</span>
+                </div>
             </div>
-            <div class="flex flex-wrap justify-center gap-16">
-                <a href="#" class="text-[10px] font-bold text-neutral-400 hover:text-brand-500 transition-colors uppercase tracking-[0.25em]">Política de Privacidade</a>
-                <a href="#" class="text-[10px] font-bold text-neutral-400 hover:text-brand-500 transition-colors uppercase tracking-[0.25em]">Termos de Uso</a>
-                <a href="#" class="text-[10px] font-bold text-neutral-400 hover:text-brand-500 transition-colors uppercase tracking-[0.25em]">Instagram</a>
-                <a href="#" class="text-[10px] font-bold text-neutral-400 hover:text-brand-500 transition-colors uppercase tracking-[0.25em]">Localização</a>
+            <div class="flex flex-col md:flex-row flex-wrap justify-center gap-6 md:gap-20">
+                <a href="#" class="text-[10px] lg:text-[11px] font-bold text-neutral-500 hover:text-brand-500 transition-colors uppercase tracking-[0.25em]">Política de Privacidade</a>
+                <a href="#" class="text-[10px] lg:text-[11px] font-bold text-neutral-500 hover:text-brand-500 transition-colors uppercase tracking-[0.25em]">Termos de Uso</a>
+                <a href="#" class="text-[10px] lg:text-[11px] font-bold text-neutral-500 hover:text-brand-500 transition-colors uppercase tracking-[0.25em]">Instagram Oficial</a>
             </div>
-            <div class="space-y-2">
-                 <p class="text-[10px] font-bold text-neutral-300 uppercase tracking-[0.5em]">Odontologia Avançada Dr. Elias Gonçalves Sousa LTDA</p>
-                 <p class="text-[10px] font-bold text-neutral-200 uppercase tracking-[0.5em]">CNPJ 50.981.355/0001-87</p>
-            </div>
+            <p class="text-[8px] lg:text-[10px] font-bold text-neutral-500 uppercase tracking-[0.4em] lg:tracking-[0.8em]">Construído com extrema precisão para a saúde do seu sorriso</p>
         </div>
     </footer>
 
